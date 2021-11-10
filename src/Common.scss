@@ -1,4 +1,6 @@
 :root {
+    --border: 1px solid red;
+
     --dodgeblue_5: #ebf6ff;
     --dodgeblue_10: #cce8ff;
     --dodgeblue_20: #99d1ff;
@@ -138,9 +140,17 @@
 
 *:focus, *:hover{outline:none;}
 
-* {
-    box-sizing: border-box;
+* {box-sizing: border-box;}
+
+a {
+    text-decoration: none;
+    color: white;
+    cursor: auto;
+    &:active {
+        color: white;
+    }
 }
+
 
 body {
     margin: 0;

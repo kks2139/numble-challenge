@@ -2,10 +2,10 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 
-function HomePage() {
+function MyRidiPage() {
     return (
         <div css={style}>
-            홈
+            마이리디
         </div>
     );
 }
@@ -14,4 +14,4 @@ const style = css`
 
 `;
 
-export default HomePage;
+export default MyRidiPage;
