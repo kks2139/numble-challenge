@@ -2,10 +2,10 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 
-function HomePage() {
+function CartPage() {
     return (
         <div css={style}>
-            홈
+            카트
         </div>
     );
 }
@@ -14,4 +14,4 @@ const style = css`
 
 `;
 
-export default HomePage;
+export default CartPage;

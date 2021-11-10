@@ -2,10 +2,10 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 
-function HomePage() {
+function NotificationPage() {
     return (
         <div css={style}>
-            홈
+            알림
         </div>
     );
 }
@@ -14,4 +14,4 @@ const style = css`
 
 `;
 
-export default HomePage;
+export default NotificationPage;

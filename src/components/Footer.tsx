@@ -2,16 +2,17 @@ import React from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 
-function HomePage() {
+function Footer() {
     return (
         <div css={style}>
-            홈
+            
         </div>
     );
 }
 
 const style = css`
-
+    height: 113px;
+    background-color: var(--dodgeblue_50);
 `;
 
-export default HomePage;
+export default Footer;
