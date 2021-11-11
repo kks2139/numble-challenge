@@ -1,4 +1,4 @@
-import React, { Provider, useEffect, useState } from 'react';
+import React, { Provider, useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {IoMdSearch} from 'react-icons/io';
@@ -15,6 +15,7 @@ function SearchBar({onSearch}: Props) {
         cancelBox: false,
         resultBox: false
     });
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const SEARCH_HISTORY = 'searchHistory';
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -43,6 +44,7 @@ function SearchBar({onSearch}: Props) {
     }
 
     const onClickClearText = ()=>{
+        inputRef.current!.focus();
         setShow({
             ...show,
             cancelBox: false,
@@ -98,6 +100,7 @@ function SearchBar({onSearch}: Props) {
             </div>
             <div className='input-box'>
                 <input 
+                    ref={inputRef}
                     name='searchBar'
                     placeholder='제목, 저자, 출판사 검색' 
                     autoComplete='off' 
