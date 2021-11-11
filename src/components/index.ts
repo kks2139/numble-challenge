@@ -5,6 +5,7 @@ import MyRidiPage from "./page/MyRidiPage"
 import Header from "./Header"
 import Footer from "./Footer"
 import SearchBar from "./SearchBar"
+import MainSlider from "./MainSlider"
 
 export {
     HomePage,
@@ -14,4 +15,5 @@ export {
     Header,
     Footer,
     SearchBar,
+    MainSlider,
 }

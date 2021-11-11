@@ -5,7 +5,7 @@ export const request = async (api: string)=>{
             url = 'https://ridibooks.com/cart/';
             break;
         case 'getBooks':
-            url = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2e5d183a-415c-43cb-91dc-b0cef96c2a05/BOOK_DATA.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211109%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211109T131228Z&X-Amz-Expires=86400&X-Amz-Signature=61c5485e354365808d9e64198bde2d1fb76fcdc01e16dcbe2df11b5c4dbef7e7&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22BOOK_DATA.json%22';
+            url = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2e5d183a-415c-43cb-91dc-b0cef96c2a05/BOOK_DATA.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211111%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211111T152202Z&X-Amz-Expires=86400&X-Amz-Signature=fb4178107243650c0f213c4c9c5d7d202cd26d434a2a233c5f915784bfca8c6d&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22BOOK_DATA.json%22';
             break;
         case 'getAlerts':
             url = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/497ff773-fc8d-4c13-89e7-88e35d7d91a9/ALERT_DATA.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211109%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211109T131259Z&X-Amz-Expires=86400&X-Amz-Signature=89042c9e1f5c24209f68c981745dc54b0c986aab732117f6860807ce71967909&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22ALERT_DATA.json%22';
