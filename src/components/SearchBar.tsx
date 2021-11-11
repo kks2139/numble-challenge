@@ -221,7 +221,6 @@ const style = css`
         width: 380px;
         background-color: white;
         border-radius: var(--radius);
-        // box-shadow: 3px 3px 25px -10px black;
         box-shadow: rgb(0 0 0 / 30%) 3px 3px 10px 3px;
         .recent-box {
             font-size: 14px;
@@ -244,7 +243,6 @@ const style = css`
                     .remove {
                         position: absolute;
                         right: 20px;
-                        border: var(--test);
                         svg {
                             display: flex;
                             align-items: center;
