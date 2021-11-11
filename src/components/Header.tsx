@@ -9,6 +9,10 @@ import {BsCart} from 'react-icons/bs';
 import {IoPersonOutline} from 'react-icons/io5';
 
 function Header() {
+    const onSearchBook = (searchText: string)=>{
+        
+    }
+
     return (
         <div css={style}>
             <div className='wrapper'>
@@ -19,7 +23,7 @@ function Header() {
                             <div className='wall'></div>
                             <div className='title-2'>RIDI<span>Select</span></div>
                         </div>
-                        <SearchBar/>
+                        <SearchBar onSearch={onSearchBook}/>
                     </div>
                     <div className='menu-box'>
                         <div className='btn'>
@@ -110,7 +114,7 @@ const style = css`
                     }
                     .wall {
                         width: 1px;
-                        height: 13px;
+                        height: 14px;
                         background-color: var(--dodgeblue_20);
                         margin: 4px 10px 0 10px;
                     }
