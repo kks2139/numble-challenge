@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {Link} from 'react-router-dom';
 import {BookData} from '../../utils/interfaces';
 import {Routes, Route, Outlet} from 'react-router-dom';
 import {BookContentPage, CategoryListPage} from '../index';
@@ -18,13 +17,13 @@ function HomePage({bookList}: Props) {
         <div css={style}>
             <div className='link-wrapper'>
                 <div className='link-box'>
-                    <Link to='category/list'>
+                    <NavLink to='category/list'>
                         <div className='icon'>
                             <div></div>
                             <div></div>
                             <div></div>
                         </div>
-                    </Link>
+                    </NavLink>
                     <NavLink to='general' className={({isActive})=> getClass(isActive)}>일반</NavLink>
                     <NavLink to='romance-serial' className={({isActive})=> getClass(isActive)}>로맨스</NavLink>
                     <NavLink to='fantasy-serial' className={({isActive})=> getClass(isActive)}>판타지</NavLink>
@@ -33,7 +32,6 @@ function HomePage({bookList}: Props) {
                 </div>
             </div>
             <div className='content-box'>
-                {/* <Outlet/> --> 파라미터를 넘겨줄 방법이 없는듯하여 App 말고 여기서 다시 Route 분기 */}
                 <Routes>
                     <Route path='category/list' element={<CategoryListPage/>}/>
                     <Route path='' element={<BookContentPage bookList={bookList} type='general'/>}/>
