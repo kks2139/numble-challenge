@@ -235,7 +235,7 @@ const style = css`
                     transition: .3s;
                     cursor: pointer;
                     &:hover {
-                        background-color: var(--slategray_5);
+                        background-color: var(--lightsteelblue_5);
                     }
                     .txt {
                         

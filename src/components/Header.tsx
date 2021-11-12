@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {Link} from 'react-router-dom';
+import {NavLink, Link} from 'react-router-dom';
 import {SearchBar} from './index';
 import {FaCoins, FaRegBell} from 'react-icons/fa';
 import {AiFillHome} from 'react-icons/ai';
@@ -9,12 +9,25 @@ import {BsCart} from 'react-icons/bs';
 import {IoPersonOutline} from 'react-icons/io5';
 
 function Header() {
+    const divRef = useRef<HTMLDivElement | null>(null);
+
     const onSearchBook = (searchText: string)=>{
         
     }
 
+    const onClickLink = (e: React.MouseEvent<HTMLElement>)=>{
+        removeSelected();
+        e.currentTarget.classList.add('sel');
+    }
+    
+    const removeSelected = ()=>{
+        divRef.current?.querySelectorAll('.link-box .sel').forEach(el => el.classList.remove('sel'));
+    }
+
+    const getClass = (isActive: boolean)=> isActive ? 'sel' : '';
+
     return (
-        <div css={style}>
+        <div css={style} ref={divRef}>
             <div className='wrapper'>
                 <div className='top-box'>
                     <div className='main-box'>
@@ -35,34 +48,34 @@ function Header() {
                     </div>
                 </div>
                 <div className='link-box'>
-                    <Link to='/'>
-                        <div className='img-btn'>
+                    <NavLink to='/' className={({isActive})=> getClass(isActive)}>
+                        <div className='link-btn'>
                             <AiFillHome size='20'/>
                             <div className='txt'>홈</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
-                    <Link to='/notification'>
-                        <div className='img-btn'>
+                    </NavLink>
+                    <NavLink to='/notification' className={({isActive})=> getClass(isActive)}>
+                        <div className='link-btn'>
                             <FaRegBell size='20'/>
                             <div className='txt'>알림</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
-                    <Link to='/cart'>
-                        <div className='img-btn'>
+                    </NavLink>
+                    <NavLink to='/cart' className={({isActive})=> getClass(isActive)}>
+                        <div className='link-btn'>
                             <BsCart size='20'/>
                             <div className='txt'>카트</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
-                    <Link to='/myridi'>
-                        <div className='img-btn'>
+                    </NavLink>
+                    <NavLink to='/myridi' className={({isActive})=> getClass(isActive)}>
+                        <div className='link-btn'>
                             <IoPersonOutline size='20'/>
                             <div className='txt'>마이리디</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
         </div>
@@ -147,34 +160,41 @@ const style = css`
         .link-box {
             display: flex;
             height: 35px;
-            .img-btn {
-                position: relative;
-                display: flex;
-                height: 100%;
+            a {
                 margin-right: 50px;
-                font-weight: bold;
-                font-size: 16px;
-                cursor: pointer;
-                svg {
-                    margin-right: 15px;
+                .link-btn {
+                    position: relative;
+                    display: flex;
+                    height: 100%;
+                    font-weight: bold;
+                    font-size: 16px;
+                    cursor: pointer;
+                    svg {
+                        margin-right: 15px;
+                    }
+                    .txt, svg {
+                        transition: .3s;
+                    }
+                    .underline {
+                        position: absolute;
+                        left: -5px;
+                        bottom: 0;
+                        width: calc(100% + 10px);
+                        height: 0px;
+                        background-color: var(--dodgeblue_20);
+                    }
+                    &:hover {
+                        .underline {
+                            height: 3px;
+                        }
+                        .txt, svg {
+                            color: var(--dodgeblue_20);
+                        }
+                    }
                 }
-                .txt {
-                    transition: .3s;
-                }
-                .underline {
-                    position: absolute;
-                    left: -5px;
-                    bottom: 0;
-                    width: calc(100% + 10px);
-                    height: 0px;
-                    background-color: var(--dodgeblue_20);
-                }
-                &:hover {
+                &.sel {
                     .underline {
                         height: 3px;
-                    }
-                    .txt {
-                        color: var(--dodgeblue_20);
                     }
                 }
             }

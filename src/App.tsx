@@ -3,6 +3,7 @@ import React from 'react';
 import {css} from '@emotion/react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import {HomePage, NotificationPage, CartPage, MyRidiPage, Header} from './components/index';
+import { HomePageContainer } from './containers';
 
 function App() {
   const navigate = useNavigate();
@@ -14,7 +15,8 @@ function App() {
       </div>
       <main>
         <Routes>
-          <Route path='/' element={<HomePage/>}/>
+          <Route path='/*' element={<HomePageContainer/>}>
+          </Route>
           <Route path='/notification' element={<NotificationPage/>}/>
           <Route path='/cart' element={<CartPage/>}/>
           <Route path='/myridi' element={<MyRidiPage/>}/>
