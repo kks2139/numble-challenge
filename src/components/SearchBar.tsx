@@ -1,73 +1,149 @@
-import React, { Provider, useState } from 'react';
+import React, { Provider, useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {IoMdSearch} from 'react-icons/io';
+import {IoCloseOutline} from 'react-icons/io5';
 
 interface Props {
-    
+    onSearch: (param: string)=> void;
 }
 
-function SearchBar({}: Props) {
+function SearchBar({onSearch}: Props) {
     const [searchText, setSearchText] = useState('');
-    const [show, setShow] = useState(false);
+    const [recentSearch, setRecentSearch] = useState<string[]>([]);
+    const [show, setShow] = useState({
+        cancelBox: false,
+        resultBox: false
+    });
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const SEARCH_HISTORY = 'searchHistory';
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const {value} = e.currentTarget;
         setSearchText(value);
-        setShow(value ? true : false);
+        setShow({
+            cancelBox: value ? true : false,
+            resultBox: true
+        });
     }
 
     const onFocus = (e: React.FocusEvent<HTMLInputElement>)=>{
-        if(e.target.name === 'searchBar' && searchText){
-            setShow(true);
+        if(e.currentTarget.name === 'searchBar'){
+            setShow({
+                cancelBox: searchText ? true : false,
+                resultBox: true
+            });
         }
     }
-    const onBlur = (e: React.FocusEvent<HTMLInputElement>)=>{
-        if(e.target.name === 'searchBar'){
-            setShow(false);
-        }
+    const onBlur = (e: React.FocusEvent<HTMLDivElement>)=>{
+        if(e.relatedTarget) return;
+        setShow({
+            cancelBox: false,
+            resultBox: false
+        });
     }
 
-    const onMouseDown = ()=>{
-        // onClick 이벤트로 하려 했으나 blur 가 click 보다 먼저 실행되고 click 이벤트가 발생하지 않음.
-        // 일단은 mousedown 이벤트로 해결함.(mousedown 이 blur 보다 먼저 실행됨)
+    const onClickClearText = ()=>{
+        inputRef.current!.focus();
+        setShow({
+            ...show,
+            cancelBox: false,
+        });
         setSearchText('');
     }
 
+    const onClickRemoveRecent = (e: React.MouseEvent<HTMLElement>)=>{
+        const text = e.currentTarget.parentNode?.querySelector('[data-recent]')?.textContent;
+        removeSearchHistory(text || '');
+    }
+
+    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>)=>{
+        if(e.key === 'Enter'){
+            addSearchHistory(searchText);
+            onSearch(searchText);
+            setShow({
+                cancelBox: false,
+                resultBox: false
+            });
+        }
+    }
+
+    const addSearchHistory = (addText: string)=>{
+        const newList = getSearchHistoryList().slice();
+        newList.unshift(addText);
+        if(newList.length > 5){
+            newList.pop();
+        }
+        localStorage.setItem(SEARCH_HISTORY, JSON.stringify(newList));
+    }
+    
+    const removeSearchHistory = (removeText: string)=>{
+        const list = getSearchHistoryList();
+        const newList = list.filter(txt => txt !== removeText);
+
+        localStorage.setItem(SEARCH_HISTORY, JSON.stringify(newList));
+        setRecentSearch(newList);
+    }
+
+    const getSearchHistoryList = ():string[] =>{
+        return JSON.parse(localStorage.getItem(SEARCH_HISTORY) || '[]');
+    }
+
+    useEffect(()=>{
+        setRecentSearch(getSearchHistoryList());
+    }, [show]);
+
     return (
-        <div css={style}>
+        <div css={style} tabIndex={0} onBlur={onBlur}>
             <div className='icon'>
                 <IoMdSearch size='24' color='#b8bfc4'/>
             </div>
             <div className='input-box'>
-                <input name='searchBar' placeholder='제목, 저자, 출판사 검색' onBlur={onBlur} onFocus={onFocus} onChange={onChange} value={searchText}></input>
-                <div className={`cancel-box ${show ? 'show' : ''}`} onMouseDown={onMouseDown}>
+                <input 
+                    ref={inputRef}
+                    name='searchBar'
+                    placeholder='제목, 저자, 출판사 검색' 
+                    autoComplete='off' 
+                    onFocus={onFocus}
+                    onKeyDown={onKeyDown} 
+                    onChange={onChange} 
+                    value={searchText}/>
+                <div className={`cancel-box ${show.cancelBox ? 'show' : ''}`} onClick={onClickClearText}>
                     <div className='btn-x'>
                         <div className='line-1'></div>
                         <div className='line-2'></div>
                     </div>
                 </div>
             </div>
-            <div className='result-box'>
+            <div className={`result-box ${show.resultBox ? 'show' : ''}`}>
                 <div className='recent-box'>
-                    <div className='last-txt'></div>
+                    <div className='last-txt'>최근 검색어</div>
                     <div className='last-txt-list-box'>
-                        <div className='txt'></div>
-                        <div className='remove'></div>
+                        {recentSearch.map(txt => (
+                            <div className='row' key={txt}>
+                                <div className='txt' data-recent>{txt}</div>
+                                <div className='remove' onClick={onClickRemoveRecent}>
+                                    <IoCloseOutline color='#d1d5d9' size='20'/>
+                                </div>
+                            </div>
+                        ))}
+                        {recentSearch.length === 0 ? 
+                            <div className='no-recent'>최근 검색어 내역이 없습니다.</div> 
+                        : null}
                     </div>
                     <div className='option-box'>
-
+                        검색어 저장 끄기
                     </div>
                 </div>
                 <div className='filter-box'>
                     <div className='books-box'>
-
+                        t
                     </div>
                     <div className='ebooks-box'>
-
+                        e
                     </div>
                     <div className='ontion-box'>
-
+                        b
                     </div>
                 </div>
             </div>
@@ -139,27 +215,57 @@ const style = css`
         }
         display: none;
         flex-direction: column;
+        z-index: 10;
         position: absolute;
-        width: 380;
+        top: 54px;
+        width: 380px;
+        background-color: white;
         border-radius: var(--radius);
+        box-shadow: rgb(0 0 0 / 30%) 3px 3px 10px 3px;
         .recent-box {
+            font-size: 14px;
             .last-txt {
                 padding: 12px 16px;
+                color: var(--slategray_50); 
             }
             .last-txt-list-box {
-                padding: 12px 16px;
-                .txt {
-                    
+                .row {
+                    display: flex;
+                    padding: 12px 16px;
+                    transition: .3s;
+                    cursor: pointer;
+                    &:hover {
+                        background-color: var(--lightsteelblue_5);
+                    }
+                    .txt {
+                        
+                    }
+                    .remove {
+                        position: absolute;
+                        right: 20px;
+                        svg {
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
                 }
-                .remove {
-                    
+                .no-recent {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 160px;
+                    color: var(--slategray_40);
                 }
             }
             .option-box {
-                
+                padding: 12px 16px;
+                color: var(--gray_30);
+                background-color: var(--gray_5);
+                border-radius: 0 0 var(--radius) var(--radius);
             }
         }
         .filter-box {
+            display: none;
             .books-box {
     
             }
