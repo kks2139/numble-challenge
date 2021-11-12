@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {NavLink, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {SearchBar} from './index';
 import {FaCoins, FaRegBell} from 'react-icons/fa';
 import {AiFillHome} from 'react-icons/ai';
@@ -23,8 +23,6 @@ function Header() {
     const removeSelected = ()=>{
         divRef.current?.querySelectorAll('.link-box .sel').forEach(el => el.classList.remove('sel'));
     }
-
-    const getClass = (isActive: boolean)=> isActive ? 'sel' : '';
 
     return (
         <div css={style} ref={divRef}>
@@ -48,34 +46,34 @@ function Header() {
                     </div>
                 </div>
                 <div className='link-box'>
-                    <NavLink to='/' className={({isActive})=> getClass(isActive)}>
-                        <div className='link-btn'>
+                    <Link to='/'>
+                        <div className='link-btn' onClick={onClickLink}>
                             <AiFillHome size='20'/>
                             <div className='txt'>홈</div>
                             <div className='underline'></div>
                         </div>
-                    </NavLink>
-                    <NavLink to='/notification' className={({isActive})=> getClass(isActive)}>
-                        <div className='link-btn'>
+                    </Link>
+                    <Link to='/notification'>
+                        <div className='link-btn' onClick={onClickLink}>
                             <FaRegBell size='20'/>
                             <div className='txt'>알림</div>
                             <div className='underline'></div>
                         </div>
-                    </NavLink>
-                    <NavLink to='/cart' className={({isActive})=> getClass(isActive)}>
-                        <div className='link-btn'>
+                    </Link>
+                    <Link to='/cart'>
+                        <div className='link-btn' onClick={onClickLink}>
                             <BsCart size='20'/>
                             <div className='txt'>카트</div>
                             <div className='underline'></div>
                         </div>
-                    </NavLink>
-                    <NavLink to='/myridi' className={({isActive})=> getClass(isActive)}>
-                        <div className='link-btn'>
+                    </Link>
+                    <Link to='/myridi'>
+                        <div className='link-btn' onClick={onClickLink}>
                             <IoPersonOutline size='20'/>
                             <div className='txt'>마이리디</div>
                             <div className='underline'></div>
                         </div>
-                    </NavLink>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -191,10 +189,10 @@ const style = css`
                             color: var(--dodgeblue_20);
                         }
                     }
-                }
-                &.sel {
-                    .underline {
-                        height: 3px;
+                    &.sel {
+                        .underline {
+                            height: 3px;
+                        }
                     }
                 }
             }

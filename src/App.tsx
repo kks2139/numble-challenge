@@ -15,8 +15,7 @@ function App() {
       </div>
       <main>
         <Routes>
-          <Route path='/*' element={<HomePageContainer/>}>
-          </Route>
+          <Route path='/*' element={<HomePageContainer/>}/>
           <Route path='/notification' element={<NotificationPage/>}/>
           <Route path='/cart' element={<CartPage/>}/>
           <Route path='/myridi' element={<MyRidiPage/>}/>
