@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {css} from '@emotion/react';
 import {BookData, BookType} from '../../utils/interfaces';
 import {translate} from '../../utils/util';
+import {MainSlider} from '../index';
 
 interface Props {
     books: BookData[]
@@ -33,8 +34,8 @@ function BookContentPage({books, types, category, onClickType}: Props) {
                     ))}
                 </div>
             </div>
-            <div className='top-slider-box'>
-                
+            <div className='main-slider-box'>
+                <MainSlider bookList={books}/>
             </div>
             <div className='cate-icons'>
                 
