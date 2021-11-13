@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {SearchBar} from './index';
 import {FaCoins, FaRegBell} from 'react-icons/fa';
 import {AiFillHome} from 'react-icons/ai';
@@ -9,19 +9,25 @@ import {BsCart} from 'react-icons/bs';
 import {IoPersonOutline} from 'react-icons/io5';
 
 function Header() {
+    const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement | null>(null);
 
     const onSearchBook = (searchText: string)=>{
         
     }
 
-    const onClickLink = (e: React.MouseEvent<HTMLElement>)=>{
-        removeSelected();
-        e.currentTarget.classList.add('sel');
+    const onClickTitle = (e: React.MouseEvent<HTMLElement>)=>{
+        toggleSelected(divRef.current?.querySelector('.link-btn:first-child')!);
+    }
+
+    const onClickLink = (e: React.MouseEvent<HTMLAnchorElement>)=>{
+        toggleSelected(e.currentTarget.querySelector('.link-btn')!);
+        navigate(e.currentTarget.pathname);
     }
     
-    const removeSelected = ()=>{
+    const toggleSelected = (node: HTMLElement)=>{
         divRef.current?.querySelectorAll('.link-box .sel').forEach(el => el.classList.remove('sel'));
+        node.classList.add('sel');
     }
 
     return (
@@ -30,7 +36,7 @@ function Header() {
                 <div className='top-box'>
                     <div className='main-box'>
                         <div className='title-box'>
-                            <Link to='/' className='title-1'>RIDIBOOKS</Link>
+                            <Link to='/' className='title-1' onClick={onClickTitle}>RIDIBOOKS</Link>
                             <div className='wall'></div>
                             <div className='title-2'>RIDI<span>Select</span></div>
                         </div>
@@ -46,29 +52,29 @@ function Header() {
                     </div>
                 </div>
                 <div className='link-box'>
-                    <Link to='/'>
-                        <div className='link-btn' onClick={onClickLink}>
+                    <Link to='/' onClick={onClickLink}>
+                        <div className='link-btn sel'>
                             <AiFillHome size='20'/>
                             <div className='txt'>홈</div>
                             <div className='underline'></div>
                         </div>
                     </Link>
-                    <Link to='/notification'>
-                        <div className='link-btn' onClick={onClickLink}>
+                    <Link to='/notification' onClick={onClickLink}>
+                        <div className='link-btn'>
                             <FaRegBell size='20'/>
                             <div className='txt'>알림</div>
                             <div className='underline'></div>
                         </div>
                     </Link>
-                    <Link to='/cart'>
-                        <div className='link-btn' onClick={onClickLink}>
+                    <Link to='/cart' onClick={onClickLink}>
+                        <div className='link-btn'>
                             <BsCart size='20'/>
                             <div className='txt'>카트</div>
                             <div className='underline'></div>
                         </div>
                     </Link>
-                    <Link to='/myridi'>
-                        <div className='link-btn' onClick={onClickLink}>
+                    <Link to='/myridi' onClick={onClickLink}>
+                        <div className='link-btn'>
                             <IoPersonOutline size='20'/>
                             <div className='txt'>마이리디</div>
                             <div className='underline'></div>

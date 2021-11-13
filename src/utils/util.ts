@@ -2,19 +2,19 @@ export const request = async (api: string)=>{
     let url = '';
     switch(api){
         case 'getEvents':
-            url = 'https://ridibooks.com/cart/';
+            url = 'event.json';
             break;
         case 'getBooks':
-            url = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2e5d183a-415c-43cb-91dc-b0cef96c2a05/BOOK_DATA.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211111%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211111T152202Z&X-Amz-Expires=86400&X-Amz-Signature=fb4178107243650c0f213c4c9c5d7d202cd26d434a2a233c5f915784bfca8c6d&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22BOOK_DATA.json%22';
+            url = 'books.json';
             break;
         case 'getAlerts':
-            url = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/497ff773-fc8d-4c13-89e7-88e35d7d91a9/ALERT_DATA.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211109%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211109T131259Z&X-Amz-Expires=86400&X-Amz-Signature=89042c9e1f5c24209f68c981745dc54b0c986aab732117f6860807ce71967909&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22ALERT_DATA.json%22';
+            url = 'alert.json';
             break;
         case 'getRents':
-            url = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c0ba6dc7-9e74-4378-856c-51a85ac5c0fb/RENT_DATA.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211109%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211109T131356Z&X-Amz-Expires=86400&X-Amz-Signature=cfd67f2324c335c803fe0b43db3ce44b3c32912fbde3ceb04dcceb6677e0d2a3&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22RENT_DATA.json%22';
+            url = 'rent.json';
             break;
         case 'getCarts':
-            url = 'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/b1cf3eaf-242d-4a2a-a5c3-dcbcd5053059/CART_DATA.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211109%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211109T131420Z&X-Amz-Expires=86400&X-Amz-Signature=8f42e9085eb0d3d8c86ceb0d59a1f84539a563f45d41edadef3e64fb970adbb2&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22CART_DATA.json%22';
+            url = 'cart.json';
             break;
     }
     try{
@@ -28,4 +28,25 @@ export const request = async (api: string)=>{
         console.error(`Error : ${e}`);
         alert('문제가 발생하였습니다');
     }
+}
+
+export const categories = [
+    {data : 'fantasy', label : '판타지'},
+    {data : 'society', label : '사회'},
+    {data : 'detective', label : '추리'},
+    {data : 'sf', label : 'SF'},
+    {data : 'humanities', label : '인문'},
+    {data : 'history', label : '역사'},
+    {data : 'romance', label : '로맨스'},
+    {data : 'thriller', label : '스릴러'},
+]
+
+export const translate = (str: string)=>{
+    const result = [
+        {from : 'novel', to : '소설'},
+        {from : 'webNovel', to : '웹소설'},
+        {from : 'ebook', to : 'e북'}
+    ].filter(m => m.from === str);
+
+    return result.length > 0 ? result[0].to : str; 
 }

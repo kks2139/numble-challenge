@@ -1,5 +1,5 @@
-import HomePageContainer from "./HomePageContainer"
+import BookContentPageContainer from "./BookContentPageContainer"
 
 export {
-    HomePageContainer,
+    BookContentPageContainer,
 }
