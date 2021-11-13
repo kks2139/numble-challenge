@@ -73,4 +73,7 @@ export interface RentData extends Book {
     rentEnd: string // yyyy-mm-dd
 }
 
-
+export interface BookType {
+    type: string
+    selected: boolean
+}

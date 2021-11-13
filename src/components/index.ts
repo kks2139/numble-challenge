@@ -19,6 +19,5 @@ export {
     SearchBar,
     MainSlider,
     BookContentPage,
-    CategoryListPage
-,
+    CategoryListPage,
 }

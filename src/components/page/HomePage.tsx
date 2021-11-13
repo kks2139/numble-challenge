@@ -1,47 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {Link} from 'react-router-dom';
-import {BookData} from '../../utils/interfaces';
-import {Routes, Route, Outlet} from 'react-router-dom';
-import {BookContentPage, CategoryListPage} from '../index';
-import { NavLink } from 'react-router-dom';
+import {Routes, Route, useNavigate} from 'react-router-dom';
+import {CategoryListPage} from '../index';
+import { Link } from 'react-router-dom';
+import {categories} from '../../utils/util';
+import {BookContentPageContainer} from '../../containers/index';
 
 interface Props {
-    bookList: BookData[]
 }
 
-function HomePage({bookList}: Props) {
-    const getClass = (isActive: boolean)=> isActive ? 'sel' : '';
+function HomePage({}: Props) {
+    const divRef = useRef<HTMLDivElement | null>(null);
+    const navigate = useNavigate();
+
+    const onClickLink = (e: React.MouseEvent<HTMLAnchorElement>)=>{
+        toggleSelected(e.currentTarget);
+        navigate(e.currentTarget.pathname);
+    }
+
+    const toggleSelected = (node: HTMLElement)=>{
+        divRef.current?.querySelectorAll('a.sel').forEach(el => el.classList.remove('sel'));
+        node.classList.add('sel');
+    }
+
+    useEffect(()=>{
+        // navigate('fantasy');
+    }, []);
 
     return (
-        <div css={style}>
+        <div css={style} ref={divRef}>
             <div className='link-wrapper'>
                 <div className='link-box'>
-                    <Link to='category/list'>
+                    <Link to='category/list' onClick={onClickLink}>
                         <div className='icon'>
                             <div></div>
                             <div></div>
                             <div></div>
                         </div>
                     </Link>
-                    <NavLink to='general' className={({isActive})=> getClass(isActive)}>일반</NavLink>
-                    <NavLink to='romance-serial' className={({isActive})=> getClass(isActive)}>로맨스</NavLink>
-                    <NavLink to='fantasy-serial' className={({isActive})=> getClass(isActive)}>판타지</NavLink>
-                    <NavLink to='webtoon' className={({isActive})=> getClass(isActive)}>만화</NavLink>
-                    <NavLink to='bl-webnovel' className={({isActive})=> getClass(isActive)}>BL</NavLink>
+                    {categories.map((cate, i) => (
+                        <Link 
+                            className={i === 0 ? 'sel' : ''}
+                            key={cate.data} 
+                            to={cate.data} 
+                            onClick={onClickLink}>
+                            {cate.label}
+                        </Link>
+                    ))}
                 </div>
             </div>
             <div className='content-box'>
-                {/* <Outlet/> --> 파라미터를 넘겨줄 방법이 없는듯하여 App 말고 여기서 다시 Route 분기 */}
                 <Routes>
                     <Route path='category/list' element={<CategoryListPage/>}/>
-                    <Route path='' element={<BookContentPage bookList={bookList} type='general'/>}/>
-                    <Route path='general' element={<BookContentPage bookList={bookList} type='general'/>}/>
-                    <Route path='romance-serial' element={<BookContentPage bookList={bookList} type='romance'/>}/>
-                    <Route path='fantasy-serial' element={<BookContentPage bookList={bookList} type='fantasy'/>}/>
-                    <Route path='webtoon' element={<BookContentPage bookList={bookList} type='webtoon'/>}/>
-                    <Route path='bl-webnovel' element={<BookContentPage bookList={bookList} type='bl'/>}/>
+                    <Route path='' element={<BookContentPageContainer/>}/>
+                    <Route path=':category' element={<BookContentPageContainer/>}/>
                 </Routes>
             </div>
         </div>
@@ -83,11 +96,12 @@ const style = css`
             }
             a {
                 font-size: 16px;
-                font-weight: bold;
+                // font-weight: bold;
                 color: var(--slategray_80);
                 padding: 0 12px;
                 margin: 0 10px;
                 &.sel {
+                    font-weight: bold;
                     color: var(--dodgeblue_60);
                 }
             }

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import app from './app';
-import homePage from './homePage';
+import bookContentPage from './bookContentPage';
 
 const rootReducer = combineReducers({
     app,
-    homePage,
+    bookContentPage,
 });
 
 export default rootReducer;
