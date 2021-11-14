@@ -11,50 +11,69 @@ function MainSlider({bookList}: Props) {
     const highRateBooks = bookList.filter(book => book.starRate.rate > 4.0);
     const divRef = useRef<HTMLDivElement | null>(null);
 
-    const markCenterBox = ()=>{
-        const boxes = divRef.current?.querySelectorAll('[data-move-box]');
-        let halfIndex = boxes ? Math.ceil(boxes.length / 2) : 0;
+    const getBoxes = ()=> divRef!.current!.querySelectorAll('[data-move-box]');
 
-    }
-
-    const moveTo = (dir: 'left' | 'right')=>{
-        const boxes = divRef.current?.querySelectorAll('[data-move-box]');
-
-        boxes?.forEach(box => {
+    const setBoxVisible = (centerNode: HTMLElement)=> {
+        const boxes = getBoxes();
+        boxes?.forEach(box => box.classList.remove('show'));
+        boxes?.forEach((box, i, arr) => {
             if(box instanceof HTMLDivElement){
-                const {width} = box.getBoundingClientRect();
-                const sideMargin = 5;
-                let nowLeft = Number(box.style.left.split('px').join(''));
-                box.style.left = (dir === 'left' ? 
-                    nowLeft - width - sideMargin : 
-                    nowLeft + width + sideMargin) + 'px';
+                if(box === centerNode){
+                    arr[i-1]?.classList.add('show');
+                    box.classList.add('show');
+                    arr[i+1]?.classList.add('show');
+                }
             }
         });
+    }
 
-        if(dir === 'left'){
+    const markCenterBox = (node: HTMLElement, dir?: string)=>{
+        const {x, width} = node.getBoundingClientRect();
+        const center = window.innerWidth / 2;
+        const nextCenter = dir === 'left' ? center + width : dir === 'right' ? center - width : center; 
 
-        }else{
-
+        if(x <= nextCenter && nextCenter <= (x + width)){
+            node.classList.add('center');
+            setBoxVisible(node);
         }
     }
     
+    const moveTo = (dir: 'left' | 'right')=>{
+        const boxes = getBoxes();
+        boxes?.forEach((box, i, arr) => {
+            if(box instanceof HTMLDivElement){
+                box.classList.remove('center');
+                const targBox = dir === 'left' ? box : arr[i-1];
+                if(targBox instanceof HTMLDivElement){
+                    markCenterBox(targBox, dir);
+                }
+                
+                const {width} = box.getBoundingClientRect();
+                let currPos = Number(box.style.left.split('px').join(''));
+                box.style.left = (dir === 'left' ? currPos - width : currPos + width) + 'px';
+            }
+        });
+    }
+    
     const clickTest = (e: React.MouseEvent<HTMLButtonElement>)=>{
-        if(e.currentTarget.dataset.left){
-            moveTo('left');
-        }else{
-            moveTo('right');
-        }
+        const dir = e.currentTarget.dataset.left;
+        moveTo(dir ? 'left' : 'right');
     }
 
     useEffect(()=>{
-
+        const boxes = getBoxes();
+        boxes?.forEach(box => {
+            if(box instanceof HTMLDivElement){
+                markCenterBox(box);
+            }
+        });
     });
 
     return (
         <div css={style} ref={divRef}>
             <div className='wrapper'>
                 {highRateBooks.map(b => (
-                    <div className='box' data-move-box>
+                    <div key={b.id} className='box' style={{left: '0'}} data-move-box>
                         <img src={b.thumbnail}></img>
                     </div>
                 ))}
@@ -66,29 +85,33 @@ function MainSlider({bookList}: Props) {
 }
 
 const style = css`
-    // position: relative;
     .wrapper {
-        // position: absolute;
         display: flex;
         justify-content: center;
+        align-items: center;
         flex-wrap: nowrap;
         width: 100%;
-        overflow: hidden;
+        height: 296px;
+        overflow-x: hidden;
         .box {
             position: relative;
-            left: 0px;
             min-width: 414px;
             height: 286px;
-            overflow: hidden;
-            border-radius: 7px;
-            margin: 0 5px;
+            padding: 0 5px;
             transition: .2s;
+            filter: brightness(0.5);
+            opacity: 0;
             img {
+                border-radius: 7px;
                 width: 100%;
                 height: 100%;
             }
             &.center {
-                transform: scale(1.05);
+                height: 296px;
+                filter: unset;
+            }
+            &.show {
+                opacity: 1;
             }
         }
     }

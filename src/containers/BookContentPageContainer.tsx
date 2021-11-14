@@ -6,7 +6,7 @@ import {RootState} from '../redux-modules/index';
 import {setBooks, setBookTyps} from '../redux-modules/bookContentPage';
 import {BookContentPage} from '../components/index';
 import { BookData } from '../utils/interfaces';
-import { categories, request } from '../utils/util';
+import { translate, request } from '../utils/util';
 import {useParams} from 'react-router-dom';
 
 interface Props {
@@ -21,7 +21,7 @@ function BookContentPageContainer({}: Props) {
     const onClickType = (value: string)=>{
         const changedSelType = bookTypes.map(b => ({
             ...b,
-            selected: b.type === value
+            selected: translate(b.type) === value
         }));
         dispatch(setBookTyps(changedSelType));
     }
