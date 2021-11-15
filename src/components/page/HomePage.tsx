@@ -64,11 +64,13 @@ function HomePage({}: Props) {
 const style = css`
     background-color: white;
     .link-wrapper {
+        display: flex;
+        justify-content: center;
         border-bottom: 1px solid var(--slategray_20);
         .link-box {
             display: flex;
             align-items: center;
-            max-width: 1000px;
+            min-width: 1000px;
             padding: 16px 20px;
             > * {
                 cursor: pointer;

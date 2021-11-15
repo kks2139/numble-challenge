@@ -140,7 +140,13 @@
 
 *:focus, *:hover{outline:none;}
 
-* {box-sizing: border-box;}
+* {
+    box-sizing: border-box;
+}
+
+ul {
+    list-style: none;
+}
 
 a {
     text-decoration: none;
