@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
-import {HomePage, NotificationPage, CartPage, MyRidiPage, Header} from './components/index';
+import {HomePage, NotificationPage, CartPage, MyRidiPage, Header, Footer} from './components/index';
 
 function App() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ function App() {
         </Routes>
       </main>
       <div className='footer'>
-
+        <Footer/>
       </div>
     </div>
   );
