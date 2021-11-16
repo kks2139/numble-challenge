@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {BookData, BookType} from '../../utils/interfaces';
+import {BookData, BookType, IconInfo} from '../../utils/interfaces';
 import {translate} from '../../utils/util';
-import {ImageSlider} from '../index';
+import {ImageSlider, Icon, Panel, BookSlider} from '../index';
 
 interface Props {
     books: BookData[]
     types: BookType[]
-    category: string
+    icons: IconInfo[]
     onClickType: (param: string)=> void
 }
 
-function BookContentPage({books, types, category, onClickType}: Props) {
+function BookContentPage({books, types, icons, onClickType}: Props) {
     const onClickBookType = (e: React.MouseEvent<HTMLDivElement>)=>{
         onClickType(e.currentTarget.textContent || '');
     }
 
-    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 4).slice(0,5);
+    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 4);
 
+    const filterWaitFree = ()=> books.filter(book => book.waitFree);
+    
     useEffect(()=>{
 
     }, []);
@@ -26,7 +28,7 @@ function BookContentPage({books, types, category, onClickType}: Props) {
     return (
         <div css={style}>
             {/* {category} !! */}
-            <div className='bar-wrapper'>
+            <section className='bar-wrapper'>
                 <div className='bar'>
                     {types.map((type, i, arr) => (
                         <section key={type.type}>
@@ -35,13 +37,24 @@ function BookContentPage({books, types, category, onClickType}: Props) {
                         </section>
                     ))}
                 </div>
-            </div>
-            <div className='main-slider-box'>
+            </section>
+            <section className='main-slider-box'>
                 <ImageSlider bookList={filterHighRateBooks()}/>
-            </div>
-            <div className='cate-icons'>
-                
-            </div>
+            </section>
+            <section className='cate-icons'>
+                <div className='wrapper'>
+                    {icons.map(ic => (
+                        <Icon color={ic.color} title={ic.title}>
+                            <span>{ic.cont}</span>
+                        </Icon>
+                    ))}
+                </div>
+            </section>
+            <section className='book-list-box'>
+                <Panel title='특별기간 기다리면 무료'>
+                    <BookSlider bookList={filterWaitFree()}/>
+                </Panel>
+            </section>
         </div>
     );
 }
@@ -50,7 +63,7 @@ const style = css`
     .bar-wrapper {
         display: flex;
         justify-content: center;
-        .bar {
+        > .bar {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -75,6 +88,24 @@ const style = css`
                 }
             }
         }
+    }
+    .cate-icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 95px;
+        margin-bottom: 40px;
+        > .wrapper {
+            max-width: 1000px;
+            width: 1000px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    .book-list-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 `;
 

@@ -13,6 +13,7 @@ function ImageSlider({bookList}: Props) {
     const divRef = useRef<HTMLDivElement | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const center = Math.floor(bookList.length / 2);
+    const isOdd = bookList.length % 2 === 0;
 
     // center 정렬이라 가운데 아이템을 currentIndex = 0 이라고 잡음
     // currentIndex 를 기준으로 + - 값을 가지고 translateX 값으로써 좌우 이동을 만듬
@@ -36,13 +37,13 @@ function ImageSlider({bookList}: Props) {
             <div className='wrapper'>
                 {bookList.map((b, i) => (
                     <div key={b.id} className='box' data-move-box>
-                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={b.thumbnail}/>
+                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={b.thumbnail} isOdd={isOdd}/>
                     </div>
                 ))}
             </div>
             <div className='buttons'>
-                <IoIosArrowDropleftCircle size='40' color='rgb(255,255,255,0.6)' data-dir='left' onClick={onClickSlide}/>
-                <IoIosArrowDroprightCircle size='40' color='rgb(255,255,255,0.6)' data-dir='right' onClick={onClickSlide}/>
+                <IoIosArrowDropleftCircle size='45' color='rgb(255,255,255,0.6)' data-dir='left' onClick={onClickSlide}/>
+                <IoIosArrowDroprightCircle size='45' color='rgb(255,255,255,0.6)' data-dir='right' onClick={onClickSlide}/>
             </div>
         </div>
     );
@@ -66,7 +67,7 @@ const style = css`
             align-items: center;
             min-width: 414px;
             height: 276px;
-            padding: 0 5px;
+            border-radius: 10px;
             cursor: pointer;
         }
     }
@@ -76,7 +77,6 @@ const style = css`
         display: flex;
         justify-content: space-between;
         svg {
-            box-shadow: 0 0 10px 0 black;
             cursor: pointer;
         }
     }
