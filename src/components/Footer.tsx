@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {MdOutlineKeyboardArrowUp} from 'react-icons/md';
+import {MdOutlineKeyboardArrowDown} from 'react-icons/md';
 
 function Footer() {
     const [clickDetail, setDetail] = useState(false);
@@ -38,7 +38,7 @@ function Footer() {
             <div className='corp-box'>
                 <div className={`title ${clickDetail ? 'sel' : ''}`} onClick={()=> {setDetail(pre => !pre)}}>
                     리디(주) 사업자 정보
-                    <MdOutlineKeyboardArrowUp size='14'/>
+                    <MdOutlineKeyboardArrowDown size='14'/>
                 </div>
                 <div className={`details ${clickDetail ? 'sel' : ''}`}>
                     <div className='txt'>
@@ -172,6 +172,7 @@ const style = css`
     }
     .policy-box {
         display: flex;
+        align-items: center;
         width: 1000px;
         padding: 0 16px;
         margin: 12px 0 30px 0;

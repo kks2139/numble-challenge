@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {css} from '@emotion/react';
 import {BookData, BookType} from '../../utils/interfaces';
 import {translate} from '../../utils/util';
-import {FeatureSlider} from '../index';
+import {ImageSlider} from '../index';
 
 interface Props {
     books: BookData[]
@@ -17,7 +17,7 @@ function BookContentPage({books, types, category, onClickType}: Props) {
         onClickType(e.currentTarget.textContent || '');
     }
 
-    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 4).slice(0);
+    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 4).slice(0,5);
 
     useEffect(()=>{
 
@@ -37,7 +37,7 @@ function BookContentPage({books, types, category, onClickType}: Props) {
                 </div>
             </div>
             <div className='main-slider-box'>
-                <FeatureSlider bookList={filterHighRateBooks()}/>
+                <ImageSlider bookList={filterHighRateBooks()}/>
             </div>
             <div className='cate-icons'>
                 
