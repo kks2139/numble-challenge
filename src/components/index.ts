@@ -5,9 +5,14 @@ import MyRidiPage from "./page/MyRidiPage"
 import Header from "./Header"
 import Footer from "./Footer"
 import SearchBar from "./SearchBar"
-import FeatureSlider from "./FeatureSlider"
+import ImageSlider from "./ImageSlider"
 import BookContentPage from "./page/BookContentPage"
 import CategoryListPage from "./page/CategoryListPage"
+import ImageItem from "./ImageItem"
+import Icon from "./Icon"
+import Panel from "./Panel"
+import BookSlider from "./BookSlider"
+import BookCard from "./BookCard"
 
 export {
     HomePage,
@@ -17,7 +22,12 @@ export {
     Header,
     Footer,
     SearchBar,
-    FeatureSlider,
+    ImageSlider,
     BookContentPage,
     CategoryListPage,
+    ImageItem,
+    Icon,
+    Panel,
+    BookSlider,
+    BookCard,
 }

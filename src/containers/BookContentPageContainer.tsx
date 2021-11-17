@@ -16,7 +16,7 @@ interface Props {
 function BookContentPageContainer({}: Props) {
     const {category='fantasy'} = useParams(); 
     const dispatch = useDispatch();
-    const {books, bookTypes} = useSelector((state: RootState)=> state.bookContentPage);
+    const {books, bookTypes, icons} = useSelector((state: RootState)=> state.bookContentPage);
 
     const onClickType = (value: string)=>{
         const changedSelType = bookTypes.map(b => ({
@@ -47,7 +47,11 @@ function BookContentPageContainer({}: Props) {
 
     return (
         <div css={style}>
-            <BookContentPage books={books} types={bookTypes} category={category} onClickType={onClickType}/>
+            <BookContentPage 
+                books={books}
+                types={bookTypes} 
+                icons={icons}
+                onClickType={onClickType}/>
         </div>
     );
 }

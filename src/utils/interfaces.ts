@@ -77,3 +77,9 @@ export interface BookType {
     type: string
     selected: boolean
 }
+
+export interface IconInfo {
+    title: string
+    color: string
+    cont?: string | HTMLOrSVGElement
+}
