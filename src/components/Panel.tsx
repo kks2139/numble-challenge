@@ -20,13 +20,14 @@ function Panel({title, children}: Props) {
 
 const style = css`
     padding: 24px 0;
-    .title {
-        border: var(--test);
+    > .title {
+        // border: var(--test);
         width: 1000px;
         font-size: 19px;
     }
-    .content {
-        border: var(--test);
+    > .content {
+        padding: 10px 0 0 0;
+        // border: var(--test);
     }
 `;
 

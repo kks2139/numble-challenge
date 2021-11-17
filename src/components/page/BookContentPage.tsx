@@ -4,6 +4,7 @@ import {css} from '@emotion/react';
 import {BookData, BookType, IconInfo} from '../../utils/interfaces';
 import {translate} from '../../utils/util';
 import {ImageSlider, Icon, Panel, BookSlider} from '../index';
+import BookCard from '../BookCard';
 
 interface Props {
     books: BookData[]
@@ -94,7 +95,7 @@ const style = css`
         justify-content: center;
         align-items: center;
         height: 95px;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         > .wrapper {
             max-width: 1000px;
             width: 1000px;

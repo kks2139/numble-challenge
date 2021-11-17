@@ -40,6 +40,7 @@ const style = ({isCenter, isSide, isOutRange, isOdd}: StyleProps)=> (css`
     opacity: 1;
     transition: .3s;
     border-radius: 10px;
+    object-fit: cover;
     ${isCenter ? `
         & {
             height: 286px;

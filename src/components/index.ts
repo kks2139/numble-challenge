@@ -12,7 +12,7 @@ import ImageItem from "./ImageItem"
 import Icon from "./Icon"
 import Panel from "./Panel"
 import BookSlider from "./BookSlider"
-import BookSliderItem from "./BookSliderItem"
+import BookCard from "./BookCard"
 
 export {
     HomePage,
@@ -29,5 +29,5 @@ export {
     Icon,
     Panel,
     BookSlider,
-    BookSliderItem,
+    BookCard,
 }
