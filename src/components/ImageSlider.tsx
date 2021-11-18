@@ -2,8 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {BookData} from '../utils/interfaces';
-import {IoIosArrowDropleftCircle, IoIosArrowDroprightCircle} from 'react-icons/io';
-import {ImageItem} from './index';
+import {ImageItem, SliderMoveButton} from './index';
 
 interface Props {
     bookList: BookData[]
@@ -19,8 +18,7 @@ function ImageSlider({bookList}: Props) {
     // currentIndex 를 기준으로 + - 값을 가지고 translateX 값으로써 좌우 이동을 만듬
     // currentIndex 가 기준이므로 index는 0 기준 좌우로 음수, 양수 값을 가지게 됨
 
-    const onClickSlide = (e: React.MouseEvent<HTMLOrSVGElement>)=>{
-        const {dir} = e.currentTarget.dataset;
+    const onClickSlide = (dir: string)=>{
         if(dir === 'left'){
             setCurrentIndex(currentIndex - 1);
         }else{
@@ -42,8 +40,8 @@ function ImageSlider({bookList}: Props) {
                 ))}
             </div>
             <div className='buttons'>
-                <IoIosArrowDropleftCircle size='45' color='rgb(255,255,255,0.6)' data-dir='left' onClick={onClickSlide}/>
-                <IoIosArrowDroprightCircle size='45' color='rgb(255,255,255,0.6)' data-dir='right' onClick={onClickSlide}/>
+                <SliderMoveButton direction='left' type='light' onMoveButtonClick={onClickSlide}/>
+                <SliderMoveButton direction='right' type='light' onMoveButtonClick={onClickSlide}/>
             </div>
         </div>
     );
@@ -69,6 +67,7 @@ const style = css`
             height: 276px;
             border-radius: 10px;
             cursor: pointer;
+            @include nodrag;
         }
     }
     .buttons {

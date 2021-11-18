@@ -50,7 +50,7 @@ const style = ({isCenter, isSide, isOutRange, isOdd}: StyleProps)=> (css`
         // filter: brightness(0.7);
     ` : ''}
     ${isOutRange ? `
-        opacity: 0.1;
+        opacity: 0;
     ` : ''}
 `);
 

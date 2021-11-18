@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {BookData} from '../utils/interfaces';
 import {FaStar, FaStarHalfAlt} from 'react-icons/fa';
 import {HiClock} from 'react-icons/hi';
+import {useNavigate} from 'react-router-dom';
 
 interface Props {
     book: BookData
@@ -11,10 +12,23 @@ interface Props {
     hideTotal?: boolean
     hidePrice?: boolean
     width?: number
-    badge?: 'waitFree' | 'discount';
+    badge?: 'waitFree' | 'discount' | 'rent';
+    move?: number
 }
 
-function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=110, badge='waitFree'}: Props) {
+function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=110, badge, move=0}: Props) {
+    const navigate = useNavigate();
+    const divRef = useRef<HTMLDivElement | null>(null);
+    const BadgeShow = badge ? badge : ['waitFree', 'discount', 'rent'][Math.floor(Math.random() * 10 % 3)];
+
+    const onBookClick = ()=>{
+        // navigate('');
+    }
+    
+    const onAuthorClick = ()=>{
+        // navigate('');
+    }
+    
     const getStars = ()=>{
         let num = book.starRate.rate;
         return (
@@ -35,20 +49,45 @@ function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=11
         );
     }
 
+    useEffect(()=>{
+        divRef.current!.style.transform = `translateX(${move}px)`;
+    }, [move]);
+
     return (
-        <div css={style(book.xRated, width)}>
-            <div className='img-box'>
-                {book.xRated ? null : <img src={book.thumbnail}></img>}
-                {book.waitFree && badge === 'waitFree' ? <div className='wait-free'><HiClock size={35} color='#1f8ce6'/></div>: null}
-                {book.buySalePercent >= 10 && badge === 'discount' ? <div className='discount'>{book.buySalePercent}%</div> : null}
-                {book.xRated ? <div className='x-rate'></div> : null}
-                {book.freeCount > 0 ? <div className='free-count'>{book.freeCount}권 무료</div> : null}
+        <div css={style(book.xRated, width)} ref={divRef}>
+            <div className='img-box' onClick={onBookClick}>
+                {book.xRated ? 
+                    <div className='cover-xrate'>
+                        <div>19</div>
+                        <span>19세 미만 이용 불가</span>
+                    </div> : 
+                    <img src={book.thumbnail}></img>
+                }
+                {book.waitFree && BadgeShow === 'waitFree' ?
+                     <div className='badge-wait-free'><HiClock size={35} color='#1f8ce6'/></div>
+                : null}
+                {book.buySalePercent >= 10 && BadgeShow === 'discount' ? 
+                    <div className='badge-discount'>{book.buySalePercent}%</div> 
+                : null}
+                {book.canRent && BadgeShow === 'rent' ? 
+                    <div className='badge-rent'>대여</div> 
+                : null}
+                {book.xRated ? 
+                    <div className='x-rate'></div> 
+                : null}
+                {book.freeCount > 0 ?
+                    <div className='free-count'>{book.freeCount}권 무료</div> 
+                : null}
                 <div className='cover-shadow'></div>
                 <div className='dark'></div>
             </div>
             <div className='detail-box'>
-                <div className='title'>{book.title}</div>
-                <div className='author'>{book.author.name}</div>
+                <div className='title' onClick={onBookClick}>
+                    {book.title}
+                </div>
+                <div className='author' onClick={onAuthorClick}>
+                    {book.author.name}
+                </div>
                 <div className='rate'>
                     {getStars()}
                     <span>{book.starRate.rateBuyerNum}명</span>
@@ -71,7 +110,7 @@ function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=11
 const style = (xRated: boolean, width: number)=> (css`
     position: relative;
     width: ${width}px;
-    cursor: pointer;
+    transition: transform .4s;
     .img-box {
         position: relative;
         display: flex;
@@ -79,7 +118,8 @@ const style = (xRated: boolean, width: number)=> (css`
         align-items: center;
         width: ${width}px;
         height: ${width === 110 ? '165px' : '190px'};
-        background-color: var(--gray_10);
+        background-color: var(--gray_5);
+        cursor: pointer;
         &:hover {
             .dark {
                 display: block;
@@ -88,7 +128,7 @@ const style = (xRated: boolean, width: number)=> (css`
         .dark {
             z-index: 1;
             display: none;
-            background-color: rgb(0,0,0,0.2);
+            background-color: rgb(0,0,0,0.1);
             position: absolute;
             top: 0;
             left: 0;
@@ -101,39 +141,64 @@ const style = (xRated: boolean, width: number)=> (css`
             left: 0;
             bottom: 0;
             right: 0;
-            box-shadow: inset 6px 0 11px -7px black, inset -6px 0 11px -7px black;
+            box-shadow: inset 6px 0 11px -7px var(--gray_70), inset -6px 0 11px -7px var(--gray_70);
         }
-        ${xRated ? `
-            backround-color: var(--gray_20);
-            &::after {
-                position: absolute;
-                content: '19';
-                font-size: 40px;
+        .cover-xrate {
+            white-space: pre;
+            color: var(--gray_20);
+            transform: translateY(-30%);
+            div {
+                width: 50px;
+                height: 58px;
+                font-size: 41px;
                 font-weight: bold;
-                white-space: pre;
-                color: var(--gray_20);
                 border-bottom: 1px solid var(--gray_20);
+                margin: 0 auto 6px auto;
             }
-        ` : ''}
+            span {
+                font-size: 13px;
+            }
+        }
         img {
             width: 100%;
             height: 100%;
         }
-        .discount {
+        [class*='badge-'] {
             z-index: 2;
             position: absolute;
             top: 0;
             left: 0;
             transform: translate(-20%, -20%);
+        }
+        .badge-discount {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background-color: var(--bluegray_40); 
             font-weight: bold;
-            font-size: 15px;
+            font-size: 14px;
+            color: white;
+        }
+        .badge-wait-free {
+            svg {
+                border-radius: 50%;
+                box-shadow: 2px 4px 10px -6px black;
+                background-color: white;
+            }
+        }
+        .badge-rent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--green_50); 
+            font-weight: bold;
+            font-size: 14px;
             color: white;
         }
         .free-count {
@@ -147,18 +212,6 @@ const style = (xRated: boolean, width: number)=> (css`
             font-weight: bold;
             color: white;
             padding: 3px 5px;
-        }
-        .wait-free {
-            z-index: 2;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translate(-20%, -20%);
-            svg {
-                border-radius: 50%;
-                box-shadow: 2px 4px 10px -6px black;
-                background-color: white;
-            }
         }
         .x-rate {
             position: absolute;
@@ -181,11 +234,13 @@ const style = (xRated: boolean, width: number)=> (css`
             font-weight: bold;
             color: var(--gray_80);
             margin: 5px 0;
+            cursor: pointer;
         }
         .author {
             font-size: 12px;
             color: var(--gray_60);
             margin-bottom: 5px;
+            cursor: pointer;
         }
         .rate {
             display: flex;
