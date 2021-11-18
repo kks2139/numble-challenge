@@ -46,14 +46,14 @@ function BookContentPage({books, types, icons, onClickType}: Props) {
                 <div className='wrapper'>
                     {icons.map(ic => (
                         <Icon color={ic.color} title={ic.title}>
-                            <span>{ic.cont}</span>
+                            <span style={{whiteSpace: 'pre'}}>{ic.cont}</span>
                         </Icon>
                     ))}
                 </div>
             </section>
             <section className='book-list-box'>
                 <Panel title='특별기간 기다리면 무료'>
-                    <BookSlider bookList={filterWaitFree()}/>
+                    <BookSlider bookList={filterWaitFree()} badge='waitFree'/>
                 </Panel>
             </section>
         </div>

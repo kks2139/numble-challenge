@@ -13,6 +13,9 @@ import Icon from "./Icon"
 import Panel from "./Panel"
 import BookSlider from "./BookSlider"
 import BookCard from "./BookCard"
+import AuthorPage from "./page/AuthorPage"
+import BookDetailPage from "./page/BookDetailPage"
+import SliderMoveButton from "./page/SliderMoveButton"
 
 export {
     HomePage,
@@ -30,4 +33,7 @@ export {
     Panel,
     BookSlider,
     BookCard,
+    AuthorPage,
+    BookDetailPage,
+    SliderMoveButton
 }
