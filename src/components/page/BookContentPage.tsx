@@ -18,7 +18,7 @@ function BookContentPage({books, types, icons, onClickType}: Props) {
         onClickType(e.currentTarget.textContent || '');
     }
 
-    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 4);
+    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 3);
 
     const filterWaitFree = ()=> books.filter(book => book.waitFree);
     
