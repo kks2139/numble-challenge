@@ -14,15 +14,20 @@ interface Props {
     imgUrl: string
     isOdd?: boolean
     circulate: boolean
+    onClickImage: (param: string)=> void
 }
 
-function ImageItem({index, currentIndex, imgUrl, isOdd=false, circulate}: Props) {
+function ImageItem({index, currentIndex, imgUrl, isOdd=false, circulate, onClickImage}: Props) {
     const imgRef = useRef<HTMLImageElement | null>(null);
     const distance = Math.abs(index - currentIndex);
     const isCenter = index === currentIndex;
     const isSide = distance >= 1;
     const isOutRange = distance >= 2;
     const moveValue = isOdd ? -1 * (currentIndex * 100 - 50) : currentIndex * 100; 
+
+    const onClick = ()=>{
+        onClickImage(imgUrl);
+    }
 
     useEffect(()=>{
         if(!circulate){
@@ -32,7 +37,7 @@ function ImageItem({index, currentIndex, imgUrl, isOdd=false, circulate}: Props)
     }, [currentIndex]);
 
     return (
-            <img css={style({isCenter, isSide, isOutRange})} src={imgUrl} ref={imgRef}></img>
+            <img css={style({isCenter, isSide, isOutRange})} src={imgUrl} onClick={onClick} ref={imgRef}></img>
     );
 }
 

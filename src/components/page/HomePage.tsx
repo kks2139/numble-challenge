@@ -6,6 +6,7 @@ import {CategoryListPage} from '../index';
 import { Link } from 'react-router-dom';
 import {categories} from '../../utils/util';
 import {BookContentPageContainer} from '../../containers/index';
+import {EventDetailPage, BookDetailPage, AuthorPage} from '../index';
 
 interface Props {
 }
@@ -25,7 +26,7 @@ function HomePage({}: Props) {
     }
 
     useEffect(()=>{
-        // navigate('fantasy');
+        
     }, []);
 
     return (
@@ -55,6 +56,9 @@ function HomePage({}: Props) {
                     <Route path='category/list' element={<CategoryListPage/>}/>
                     <Route path='' element={<BookContentPageContainer/>}/>
                     <Route path=':category' element={<BookContentPageContainer/>}/>
+                    <Route path='event' element={<EventDetailPage/>}/>
+                    <Route path='books' element={<BookDetailPage/>}/>
+                    <Route path='author' element={<AuthorPage/>}/>
                 </Routes>
             </div>
         </div>
@@ -70,7 +74,7 @@ const style = css`
         .link-box {
             display: flex;
             align-items: center;
-            min-width: 1000px;
+            width: 1000px;
             padding: 16px 20px;
             > * {
                 cursor: pointer;

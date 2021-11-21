@@ -16,6 +16,8 @@ import BookCard from "./BookCard"
 import AuthorPage from "./page/AuthorPage"
 import BookDetailPage from "./page/BookDetailPage"
 import SliderMoveButton from "./page/SliderMoveButton"
+import BookGridSlider from "./BookGridSlider"
+import EventDetailPage from "./page/EventDetailPage"
 
 export {
     HomePage,
@@ -35,5 +37,7 @@ export {
     BookCard,
     AuthorPage,
     BookDetailPage,
-    SliderMoveButton
+    SliderMoveButton,
+    BookGridSlider,
+    EventDetailPage
 }

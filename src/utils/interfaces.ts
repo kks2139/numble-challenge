@@ -23,7 +23,7 @@ export interface Author {
     representatives: {
         name: string
         thumbnail: string
-    }
+    }[],
     introduction: string
 }
 
@@ -31,7 +31,10 @@ export interface Translator {
     name: string
     nationality: string
     career: string[]
-    representatives: string[]
+    representatives: {
+        name: string
+        thumbnail: string
+    }[],
     introduction: string
 }
 

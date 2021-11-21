@@ -5,7 +5,7 @@ import {css} from '@emotion/react';
 function BookDetailPage() {
     return (
         <div css={style}>
-            카트
+            책 상세
         </div>
     );
 }

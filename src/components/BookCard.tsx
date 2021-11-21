@@ -12,23 +12,33 @@ interface Props {
     hideTotal?: boolean
     hidePrice?: boolean
     width?: number
-    badge?: 'waitFree' | 'discount' | 'rent';
+    height?: number
+    badge?: 'waitFree' | 'discount' | 'rent' | 'none';
     move?: number
+    dark?: boolean
+    hideDetailInfo?: boolean
+    onBookClick: (param: BookData)=> void
+    onAuthorClick?: (param: BookData)=> void
 }
 
-function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=110, badge, move=0}: Props) {
+function BookCard({
+    book, 
+    hideRate=false, 
+    hideTotal=false, 
+    hidePrice=false, 
+    width=110, 
+    height, 
+    badge, 
+    move=0, 
+    dark=false, 
+    hideDetailInfo=false,
+    onBookClick: onBookClick,
+    onAuthorClick: onAuthorClick
+}: Props) {
     const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement | null>(null);
-    const BadgeShow = badge ? badge : ['waitFree', 'discount', 'rent'][Math.floor(Math.random() * 10 % 3)];
+    const BadgeShow = badge ? badge : badge === 'none' ? false : ['waitFree', 'discount', 'rent'][Math.floor(Math.random() * 10 % 3)];
 
-    const onBookClick = ()=>{
-        // navigate('');
-    }
-    
-    const onAuthorClick = ()=>{
-        // navigate('');
-    }
-    
     const getStars = ()=>{
         let num = book.starRate.rate;
         return (
@@ -36,10 +46,10 @@ function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=11
                 {Array(5).fill(1).map((a, i)=>{
                     let result = <FaStar size='12' color='#cccccc'/>;
                     if(num - (i+1) >= 0){
-                        result = <FaStar size='12' color='orange'/>;
+                        result = <FaStar size='12' color='#FA722E'/>;
                     }else{
                         if((num + '').indexOf('.') > -1){
-                            result = <FaStarHalfAlt size='12' color='orange'/>
+                            result = <FaStarHalfAlt size='12' color='#FA722E'/>
                             num = Number(num.toFixed());
                         }
                     }
@@ -54,8 +64,8 @@ function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=11
     }, [move]);
 
     return (
-        <div css={style(book.xRated, width)} ref={divRef}>
-            <div className='img-box' onClick={onBookClick}>
+        <div css={style(book.xRated, width, height, dark)} ref={divRef}>
+            <div className='img-box' onClick={()=> {onBookClick(book)}}>
                 {book.xRated ? 
                     <div className='cover-xrate'>
                         <div>19</div>
@@ -75,39 +85,49 @@ function BookCard({book, hideRate=true, hideTotal=true, hidePrice=true, width=11
                 {book.xRated ? 
                     <div className='x-rate'></div> 
                 : null}
-                {book.freeCount > 0 ?
+                {width > 70 && book.freeCount > 0 ?
                     <div className='free-count'>{book.freeCount}권 무료</div> 
                 : null}
                 <div className='cover-shadow'></div>
                 <div className='dark'></div>
             </div>
-            <div className='detail-box'>
-                <div className='title' onClick={onBookClick}>
-                    {book.title}
+            {hideDetailInfo ? null : 
+                <div className='detail-box'>
+                    <div className='title' onClick={()=> {onBookClick(book)}}>
+                        {book.title}
+                    </div>
+                    <div className='author' onClick={()=> {onAuthorClick && onAuthorClick(book)}}>
+                        {book.author.name}
+                    </div>
+                    {hideRate ? null : 
+                        <div className='rate'>
+                            {getStars()}
+                            <span>{book.starRate.rateBuyerNum}명</span>
+                        </div>
+                    }
+                    {hideTotal ? null : 
+                        <div className='total'>
+                            총 {book.count}
+                            {book.isFinished ? <div className='finished'></div> : null}
+                        </div>
+                    }
+                    {hidePrice ? null : 
+                        <>
+                            <div className='rent'>
+                                대여<span>{book.rentalPrice.toLocaleString()}원</span>
+                            </div>
+                            <div className='price'>
+                                구매<span>{book.buyPrice.toLocaleString()}원</span>
+                            </div>
+                        </>
+                    }
                 </div>
-                <div className='author' onClick={onAuthorClick}>
-                    {book.author.name}
-                </div>
-                <div className='rate'>
-                    {getStars()}
-                    <span>{book.starRate.rateBuyerNum}명</span>
-                </div>
-                <div className='total'>
-                    총 {book.count}
-                    {book.isFinished ? <div className='finished'></div> : null}
-                </div>
-                <div className='rent'>
-                    대여<span>{book.rentalPrice.toLocaleString()}원</span>
-                </div>
-                <div className='price'>
-                    구매<span>{book.buyPrice.toLocaleString()}원</span>
-                </div>
-            </div>
+            }
         </div>
     );
 }
 
-const style = (xRated: boolean, width: number)=> (css`
+const style = (xRated: boolean, width: number, height: number | undefined, dark: boolean)=> (css`
     position: relative;
     width: ${width}px;
     transition: transform .4s;
@@ -117,7 +137,7 @@ const style = (xRated: boolean, width: number)=> (css`
         justify-content: center;
         align-items: center;
         width: ${width}px;
-        height: ${width === 110 ? '165px' : '190px'};
+        height: ${height ? height : 197}px;
         background-color: var(--gray_5);
         cursor: pointer;
         &:hover {
@@ -232,13 +252,14 @@ const style = (xRated: boolean, width: number)=> (css`
         .title {
             font-size: 13px;
             font-weight: bold;
-            color: var(--gray_80);
+            color: ${dark ? 'white' : 'var(--gray_80)'};
             margin: 5px 0;
             cursor: pointer;
         }
         .author {
             font-size: 12px;
-            color: var(--gray_60);
+            color: ${dark ? 'var(--gray_30)' : 'var(--gray_60)'};
+            // font-weight : ${dark ? 'bold' : 'normal'};
             margin-bottom: 5px;
             cursor: pointer;
         }
@@ -249,7 +270,7 @@ const style = (xRated: boolean, width: number)=> (css`
             margin-bottom: 5px;
             span {
                 font-size: 11px;
-                color: var(--gray_50);
+                color: var(--gray_40);
                 margin-left: 3px;
             }
         }

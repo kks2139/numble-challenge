@@ -1,20 +1,21 @@
 import React, {useEffect, useRef, useState} from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {BookData} from '../utils/interfaces';
+import {Event} from '../utils/interfaces';
 import {ImageItem, SliderMoveButton} from './index';
 
 interface Props {
-    bookList: BookData[]
+    eventList: Event[]
+    onClickImage: (param: string)=> void
 }
 
-function ImageSlider({bookList}: Props) {
+function ImageSlider({eventList, onClickImage}: Props) {
     const divRef = useRef<HTMLDivElement | null>(null);
     const intervalId = useRef(0);
-    const [list, setList] = useState<BookData[]>([]);
+    const [list, setList] = useState<Event[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const center = Math.floor(bookList.length / 2);
-    const isOdd = bookList.length % 2 === 0;
+    const center = Math.floor(eventList.length / 2);
+    const isOdd = eventList.length % 2 === 0;
 
     const [circulate, setCirculate] = useState(false);
 
@@ -32,7 +33,7 @@ function ImageSlider({bookList}: Props) {
                 setCirculate(false);
             }
         }else{
-            if(center + currentIndex > bookList.length - 3){
+            if(center + currentIndex > eventList.length - 3){
                 circulateList(dir);
                 setCirculate(true);
             }else{
@@ -56,8 +57,8 @@ function ImageSlider({bookList}: Props) {
     }
 
     useEffect(()=>{
-        setList(bookList);
-    }, [bookList]);
+        setList(eventList);
+    }, [eventList]);
     
     useEffect(()=>{
         intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
@@ -67,9 +68,9 @@ function ImageSlider({bookList}: Props) {
     return (
         <div css={style} ref={divRef}>
             <div className='wrapper'>
-                {list.map((b, i) => (
-                    <div key={b.id} className='box' data-move-box>
-                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={b.thumbnail} isOdd={isOdd} circulate={circulate}/>
+                {list.map((ev, i) => (
+                    <div key={i} className='box' data-move-box>
+                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={ev.thumbnail} isOdd={isOdd} circulate={circulate} onClickImage={onClickImage}/>
                     </div>
                 ))}
             </div>

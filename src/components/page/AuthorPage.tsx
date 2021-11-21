@@ -5,7 +5,7 @@ import {css} from '@emotion/react';
 function AuthorPage() {
     return (
         <div css={style}>
-            카트
+            작가 상세
         </div>
     );
 }
