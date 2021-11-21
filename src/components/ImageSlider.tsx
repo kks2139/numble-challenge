@@ -1,18 +1,23 @@
 import React, {useEffect, useRef, useState} from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {BookData} from '../utils/interfaces';
+import {Event} from '../utils/interfaces';
 import {ImageItem, SliderMoveButton} from './index';
 
 interface Props {
-    bookList: BookData[]
+    eventList: Event[]
+    onClickImage: (param: string)=> void
 }
 
-function ImageSlider({bookList}: Props) {
+function ImageSlider({eventList, onClickImage}: Props) {
     const divRef = useRef<HTMLDivElement | null>(null);
+    const intervalId = useRef(0);
+    const [list, setList] = useState<Event[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const center = Math.floor(bookList.length / 2);
-    const isOdd = bookList.length % 2 === 0;
+    const center = Math.floor(eventList.length / 2);
+    const isOdd = eventList.length % 2 === 0;
+
+    const [circulate, setCirculate] = useState(false);
 
     // center 정렬이라 가운데 아이템을 currentIndex = 0 이라고 잡음
     // currentIndex 를 기준으로 + - 값을 가지고 translateX 값으로써 좌우 이동을 만듬
@@ -20,22 +25,52 @@ function ImageSlider({bookList}: Props) {
 
     const onClickSlide = (dir: string)=>{
         if(dir === 'left'){
-            setCurrentIndex(currentIndex - 1);
+            if(center + currentIndex < 2){
+                circulateList(dir);
+                setCirculate(true);
+            }else{
+                setCurrentIndex(currentIndex - 1);
+                setCirculate(false);
+            }
         }else{
-            setCurrentIndex(currentIndex + 1);
+            if(center + currentIndex > eventList.length - 3){
+                circulateList(dir);
+                setCirculate(true);
+            }else{
+                setCurrentIndex(currentIndex + 1);
+                setCirculate(false);
+            }
         }
     }
 
+    const circulateList = (dir: string)=>{
+        const newList = list.slice();
+        const moveNode = dir === 'left' ? newList.pop() : newList.shift();
+        if(moveNode){
+            if(dir=== 'left'){
+                newList.unshift(moveNode);
+            }else{
+                newList.push(moveNode);
+            }
+        }
+        setList(newList);
+    }
+
     useEffect(()=>{
-        setCurrentIndex(0);
-    }, [bookList]);
+        setList(eventList);
+    }, [eventList]);
+    
+    useEffect(()=>{
+        intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
+        return ()=> clearInterval(intervalId.current);
+    });
 
     return (
         <div css={style} ref={divRef}>
             <div className='wrapper'>
-                {bookList.map((b, i) => (
-                    <div key={b.id} className='box' data-move-box>
-                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={b.thumbnail} isOdd={isOdd}/>
+                {list.map((ev, i) => (
+                    <div key={i} className='box' data-move-box>
+                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={ev.thumbnail} isOdd={isOdd} circulate={circulate} onClickImage={onClickImage}/>
                     </div>
                 ))}
             </div>

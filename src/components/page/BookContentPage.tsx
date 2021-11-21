@@ -1,26 +1,48 @@
 import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
-import {BookData, BookType, IconInfo} from '../../utils/interfaces';
+import {BookData, BookType, Event, IconInfo} from '../../utils/interfaces';
 import {translate} from '../../utils/util';
-import {ImageSlider, Icon, Panel, BookSlider} from '../index';
-import BookCard from '../BookCard';
+import {ImageSlider, Icon, Panel, BookSlider, BookGridSlider} from '../index';
+import {useNavigate} from 'react-router-dom';
 
 interface Props {
     books: BookData[]
+    events: Event[]
     types: BookType[]
     icons: IconInfo[]
     onClickType: (param: string)=> void
 }
 
-function BookContentPage({books, types, icons, onClickType}: Props) {
+function BookContentPage({books, events, types, icons, onClickType}: Props) {
+    const navigate = useNavigate();
+
     const onClickBookType = (e: React.MouseEvent<HTMLDivElement>)=>{
         onClickType(e.currentTarget.textContent || '');
     }
 
-    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 4);
+    const filterHighRateBooks = ()=> books.filter(book => book.starRate.rate > 3);
 
     const filterWaitFree = ()=> books.filter(book => book.waitFree);
+
+    const filterLotsOfAwards = ()=> books.filter(book => book.author.awards.length > 2);
+
+    const filterLotsAuthorCareer = ()=> books.filter(book => book.author.representatives.length > 1);
+
+    const filterForGridSlider = ()=> books.slice(0, 9);
+
+    const getHourMin = ()=> {
+        const arr = new Date().toTimeString().split(':');
+        return `${arr[0]}시 ${arr[0]}분`;
+    }
+
+    const onClickImage = (imgUrl: string)=>{
+        navigate('/event', {
+            state: {
+                details: events.filter(ev => ev.thumbnail === imgUrl)[0].details
+            }
+        });
+    }
     
     useEffect(()=>{
 
@@ -39,8 +61,8 @@ function BookContentPage({books, types, icons, onClickType}: Props) {
                     ))}
                 </div>
             </section>
-            <section className='main-slider-box'>
-                <ImageSlider bookList={filterHighRateBooks()}/>
+            <section className='img-slide-box'>
+                <ImageSlider eventList={events} onClickImage={onClickImage}/>
             </section>
             <section className='cate-icons'>
                 <div className='wrapper'>
@@ -52,8 +74,17 @@ function BookContentPage({books, types, icons, onClickType}: Props) {
                 </div>
             </section>
             <section className='book-list-box'>
+                <Panel title='수상 경력이 다양한 작가의 작품!' dark={true} titleLink={false}>
+                    <BookSlider bookList={filterLotsOfAwards()} dark={true}  badge='discount' hideRate={true} hideTotal={true} hidePrice={true}/>
+                </Panel>
+                <Panel title='사람들이 지금 많이 읽고있는 책' titleLink={false} label={getHourMin()}>
+                    <BookGridSlider bookList={filterForGridSlider()} width={50} height={70}/>
+                </Panel>
                 <Panel title='특별기간 기다리면 무료'>
                     <BookSlider bookList={filterWaitFree()} badge='waitFree'/>
+                </Panel>
+                <Panel title='베스트 셀러'>
+                    <BookGridSlider bookList={filterForGridSlider()} width={80} height={113}/>
                 </Panel>
             </section>
         </div>

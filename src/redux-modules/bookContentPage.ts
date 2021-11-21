@@ -1,10 +1,15 @@
-import {BookData, BookType, IconInfo} from '../utils/interfaces';
+import {BookData, BookType, IconInfo, Event} from '../utils/interfaces';
 
 const SET_BOOKS = 'bookContentPage/SET_BOOKS' as const;
+const SET_EVENTS = 'bookContentPage/SET_EVENTS' as const;
 const SET_BOOK_TYPES = 'bookContentPage/SET_BOOK_TYPES' as const;
 
 export const setBooks = (arg: BookData[])=> ({ 
     type : SET_BOOKS,
+    payload : arg
+});
+export const setEvents = (arg: Event[])=> ({ 
+    type : SET_EVENTS,
     payload : arg
 });
 export const setBookTyps = (arg: BookType[])=> ({ 
@@ -14,12 +19,14 @@ export const setBookTyps = (arg: BookType[])=> ({
 
 type actionType = 
     | ReturnType<typeof setBooks>
+    | ReturnType<typeof setEvents>
     | ReturnType<typeof setBookTyps>
 
 type stateType = {
     books: BookData[]
     bookTypes: BookType[]
     icons: IconInfo[]
+    events: Event[]
 }
 
 const initState: stateType = {
@@ -35,7 +42,8 @@ const initState: stateType = {
         {title : '리디ONLY', color : 'rgb(232, 180, 206)', cont : 'RIDI'},
         {title : '50화 무료', color : 'rgb(171, 220, 186)', cont : 'FREE'},
         {title : '위클리쿠폰', color : 'rgb(240, 185, 185)', cont : 'Coup'}
-    ]
+    ],
+    events: []
 };
 
 function bookContentPage(state: stateType = initState, action: actionType) {
@@ -44,6 +52,11 @@ function bookContentPage(state: stateType = initState, action: actionType) {
             return {
                 ...state,
                 books: action.payload.slice()
+            };
+        case SET_EVENTS:
+            return {
+                ...state,
+                events: action.payload.slice()
             };
         case SET_BOOK_TYPES:
             return {

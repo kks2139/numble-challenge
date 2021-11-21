@@ -95,7 +95,7 @@ const style = css`
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-width: 1000px;
+        width: 1000px;
         height: 100%;
         padding: 16px 14px 0 14px;
         .top-box {

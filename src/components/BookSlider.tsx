@@ -3,19 +3,31 @@ import React, { useEffect, useRef, useState } from 'react';
 import {css} from '@emotion/react';
 import {BookData} from '../utils/interfaces';
 import {BookCard, SliderMoveButton} from './index';
+import {useNavigate} from 'react-router-dom';
 
 interface Props {
     bookList: BookData[]
-    gridType?: boolean 
+    showCount?: number
     hideRate?: boolean
     hideTotal?: boolean
     hidePrice?: boolean
     width?: number
+    dark?: boolean
     badge?: 'waitFree' | 'discount' | 'rent';
 }
 
-function BookSlider({bookList, gridType=false, hideRate=true, hideTotal=true, hidePrice=true, width=110, badge}: Props) {
-    const SHOW_CNT = 6;
+function BookSlider({
+    bookList, 
+    showCount=6, 
+    hideRate=false, 
+    hideTotal=false, 
+    hidePrice=false, 
+    width=110, 
+    dark=false, 
+    badge,
+}: Props) {
+    const navigate = useNavigate();
+    const SHOW_CNT = showCount;
     const divRef = useRef<HTMLDivElement | null>(null);
     const [bookWidth, setBookWidth] = useState(width);
     const [move, setMove] = useState(0);
@@ -51,6 +63,22 @@ function BookSlider({bookList, gridType=false, hideRate=true, hideTotal=true, hi
         return Math.floor(width / (SHOW_CNT + 1)) + 3;
     }
 
+    const onBookClick = (book: BookData)=>{
+        navigate('/books', {
+            state: {
+                book: book
+            }
+        });
+    }
+
+    const onAuthorClick = (book: BookData)=>{
+        navigate('/author', {
+            state: {
+                author: book.author
+            }
+        });
+    }
+
     useEffect(()=>{
         setBookWidth(getBookWidth());
     }, []);
@@ -58,30 +86,33 @@ function BookSlider({bookList, gridType=false, hideRate=true, hideTotal=true, hi
     return (
         <div css={style} ref={divRef}>
             <div className='wrapper'>
-                    {bookList.map(book => (
-                        <div className='card'>
-                            <BookCard 
-                                key={book.id}
-                                book={book}
-                                hideRate={hideRate}
-                                hideTotal={hideTotal}
-                                hidePrice={hidePrice}
-                                width={bookWidth}
-                                badge={badge}
-                                move={move}/>
-                        </div>
-                    ))}
+                {bookList.map(book => (
+                    <div className='card'>
+                        <BookCard 
+                            key={book.id}
+                            book={book}
+                            hideRate={hideRate}
+                            hideTotal={hideTotal}
+                            hidePrice={hidePrice}
+                            width={bookWidth}
+                            badge={badge}
+                            dark={dark}
+                            move={move}
+                            onBookClick={onBookClick}
+                            onAuthorClick={onAuthorClick}/>
+                    </div>
+                ))}
             </div>
             <div className='btn-slide-box'>
-                <SliderMoveButton direction='left' onMoveButtonClick={onSlideBtnClick}/>
-                <SliderMoveButton direction='right' onMoveButtonClick={onSlideBtnClick}/>
+                <SliderMoveButton direction='left' type={dark ? 'dark' : ''} onMoveButtonClick={onSlideBtnClick}/>
+                <SliderMoveButton direction='right' type={dark ? 'dark' : ''} onMoveButtonClick={onSlideBtnClick}/>
             </div>
         </div>
     );
 }
 
 const style = css`
-    max-width: 1000px;
+    width: 1000px;
     position: relative;
     display: flex;
     > .wrapper {
@@ -97,7 +128,7 @@ const style = css`
     }
     .btn-slide-box {
         position: absolute;
-        top: 70px;
+        transform: translateY(200%);
         display: flex;
         justify-content: space-between;
         width: 100%;
