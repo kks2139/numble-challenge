@@ -35,7 +35,6 @@ function BookCard({
     onBookClick: onBookClick,
     onAuthorClick: onAuthorClick
 }: Props) {
-    const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement | null>(null);
     const BadgeShow = badge ? badge : badge === 'none' ? false : ['waitFree', 'discount', 'rent'][Math.floor(Math.random() * 10 % 3)];
 
