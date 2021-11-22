@@ -64,8 +64,8 @@ export interface Book {
     canRent: boolean // canRent 항목의 우선 순위가 rentalPrice, rentalSalePrice보다 높습니다.
     waitFree: boolean
     xRated: boolean
-    description: string[]
-    index: string[]
+    description: string
+    index: string
 }
 
 export interface BookData extends Book {

@@ -18,6 +18,7 @@ import BookDetailPage from "./page/BookDetailPage"
 import SliderMoveButton from "./page/SliderMoveButton"
 import BookGridSlider from "./BookGridSlider"
 import EventDetailPage from "./page/EventDetailPage"
+import DescPanel from "./DescPanel"
 
 export {
     HomePage,
@@ -39,5 +40,6 @@ export {
     BookDetailPage,
     SliderMoveButton,
     BookGridSlider,
-    EventDetailPage
+    EventDetailPage,
+    DescPanel
 }
