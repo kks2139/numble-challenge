@@ -146,6 +146,7 @@
 
 ul {
     list-style: none;
+    padding-inline-start: unset;
 }
 
 a {
@@ -218,8 +219,11 @@ body {
     padding: 13px;
     border: 1px solid var(--slategray_20);
     color: var(--slategray_50);
+    font-size: 12px;
+    font-weight: bold;
     transition: .2s;
     cursor: pointer;
+    box-shadow: 0 2px 2px 0px var(--slategray_5);
     &:hover {
         background-color: var(--slategray_5);
     }

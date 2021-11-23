@@ -165,7 +165,7 @@ const style = (xRated: boolean, width: number, height: number | undefined, dark:
         .cover-xrate {
             white-space: pre;
             color: var(--gray_20);
-            transform: translateY(-30%);
+            transform: ${70 <= width && width < 90 ? 'scale(0.6)' : width < 70 ? 'scale(0.4)' : ''};
             div {
                 width: 50px;
                 height: 58px;
