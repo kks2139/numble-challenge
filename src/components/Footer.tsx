@@ -79,7 +79,7 @@ const style = css`
         padding: 24px 16px;
         .title-box {
             display: flex;
-            
+            margin-right: 80px;
             .txt {
                 font-size: 20px;
                 font-weight: bold;
