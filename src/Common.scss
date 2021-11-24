@@ -185,7 +185,7 @@ body {
     display: flex;
     align-items: center;
     cursor: pointer;
-    transition: .2s;
+    transition: .3s;
     svg {
         margin-right: 3px;
     }
@@ -221,7 +221,7 @@ body {
     color: var(--slategray_50);
     font-size: 12px;
     font-weight: bold;
-    transition: .2s;
+    transition: .3s;
     cursor: pointer;
     box-shadow: 0 2px 2px 0px var(--slategray_5);
     &:hover {

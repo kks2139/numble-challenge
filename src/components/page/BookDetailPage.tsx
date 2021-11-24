@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {useLocation, useNavigate} from 'react-router-dom';
@@ -10,6 +10,7 @@ import {BsHeadphones, BsFillPencilFill} from 'react-icons/bs';
 import {RiFilePaper2Line, RiAppleFill} from 'react-icons/ri';
 import {AiFillAndroid, AiFillWindows} from 'react-icons/ai';
 import {GrAppleAppStore} from 'react-icons/gr';
+import {GiHazardSign} from 'react-icons/gi';
 
 interface Params {
     book: BookData
@@ -19,6 +20,7 @@ function BookDetailPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const {book}: Params = location.state;
+    const divRef = useRef<HTMLDivElement | null>(null);
     const rateRef = useRef<HTMLDivElement | null>(null);
     const [showImgModal, setShowImgModal] = useState(false);
     const [isAuthor, setIsAutor] = useState(true);
@@ -33,7 +35,7 @@ function BookDetailPage() {
                         result = <FaStar size='15' color='#FA722E'/>;
                     }else{
                         if((num + '').indexOf('.') > -1){
-                            result = <FaStarHalfAlt size='12' color='#FA722E'/>
+                            result = <FaStarHalfAlt size='15' color='#FA722E'/>
                             num = Number(num.toFixed());
                         }
                     }
@@ -46,27 +48,23 @@ function BookDetailPage() {
     const toggleImageModal = ()=>{
         setShowImgModal(pre => !pre);
     }
-    
-    const onMouseOverStar = (e: React.MouseEvent<HTMLOrSVGElement>)=>{
-        const idx = e.currentTarget.dataset.idx;
+
+    const setStarHover = (index: string)=> {
         const texts = rateRef.current?.querySelectorAll('[class*="rt-"]');
         texts?.forEach(el => {
             if(el instanceof HTMLDivElement){
-                el.style.display = idx === el.dataset.idx ? 'block' : 'none';
+                el.style.display = index === el.dataset.idx ? 'flex' : 'none';
             }
         })
-        console.log(123);
-        
-        
+    }
+    
+    const onMouseOverStar = (e: React.MouseEvent<HTMLDivElement>)=>{
+        const idx = e.currentTarget.dataset.idx;
+        setStarHover(idx || '0');
     }
 
     const onMouseLeave = ()=>{
-        const texts = rateRef.current?.querySelectorAll('[class*="rt-"]');
-        texts?.forEach(el => {
-            if(el instanceof HTMLDivElement){
-                el.style.display = '0' === el.dataset.idx ? 'block' : 'none';
-            }
-        })
+        setStarHover('0');
     }
     
     const onClickPerson = (e: React.MouseEvent<HTMLDivElement>)=>{
@@ -74,16 +72,33 @@ function BookDetailPage() {
         setIsAutor(!trans);
     }
 
-    const onBookClick = (book: BookData)=>{
-        navigate('/books', {
-            state: {
-                book: book
-            }
-        });
+    const onClickCaution = (e: React.MouseEvent<HTMLDivElement>)=>{
+        e.currentTarget.classList.toggle('sel');
+        divRef.current?.querySelector('.caution')?.classList.toggle('open');
     }
 
+    const onClickCheckbox = (e: React.MouseEvent<HTMLDivElement>)=>{
+        e.currentTarget.classList.toggle('sel');
+    }
+
+    const onClickStar = ()=>{
+
+    }
+
+    const onKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>)=>{
+        const el = e.currentTarget;
+        let breaks = el.value.split('\n').length + 2;
+        breaks = breaks < 0 ? 0 : breaks;
+
+        el.style.height = `${breaks * 22 < 50 ? 110 : breaks * 22}px`;
+    }
+
+    useEffect(()=>{
+        setStarHover('0');
+    }, []);
+
     return (
-        <div css={style(isAuthor)}>
+        <div css={style(isAuthor)} ref={divRef}>
             {showImgModal ? 
                 <div className='img-modal' onClick={toggleImageModal}>
                     <div className='wrapper'>
@@ -102,7 +117,11 @@ function BookDetailPage() {
                         <div className='main-button-white' onClick={toggleImageModal}><IoBookSharp/>미리보기</div>
                     </div>
                     <div className='detail'>
-                        <div className='cate'>{book.category}</div>
+                        <div className='cate'>
+                            {book.category.map(c => (
+                                <div>{c}</div>
+                            ))}
+                        </div>
                         <div className='title'>{book.title}</div>
                         <div className='star'>
                             {getStars()}
@@ -259,21 +278,48 @@ function BookDetailPage() {
                         <div className='input-rate' ref={rateRef}>
                             <div className='eval-text'>
                                 <div className='rt-0' data-idx='0'>이 책을 평가해주세요!</div>
-                                <div className='rt-1' data-idx='1'>별로에요</div>
-                                <div className='rt-2' data-idx='2'>그저 그래요</div>
-                                <div className='rt-3' data-idx='3'>보통이에요</div>
-                                <div className='rt-4' data-idx='4'>좋아요</div>
-                                <div className='rt-5' data-idx='5'>최고에요</div>
+                                <div className='rt-1 blue' data-idx='1'>별로에요</div>
+                                <div className='rt-2 blue' data-idx='2'>그저 그래요</div>
+                                <div className='rt-3 blue' data-idx='3'>보통이에요</div>
+                                <div className='rt-4 blue' data-idx='4'>좋아요</div>
+                                <div className='rt-5 blue' data-idx='5'>최고에요</div>
                             </div>
                             <div className='star-box'>
                                 {Array(5).fill(1).map((d, i) => (
-                                    <div key={i} className='stars'>
-                                        <FaStar data-idx={i+1} data-sel size='39' color='#d1d5d9' onMouseEnter={onMouseOverStar} onMouseLeave={onMouseLeave}/>
-                                        <FaStar data-idx={i+1} data-empty size='39' color='#FA722E' onMouseEnter={onMouseOverStar} onMouseLeave={onMouseLeave}/>
+                                    <div key={i} className='stars' data-idx={5-i} onClick={onClickStar} onMouseEnter={onMouseOverStar} onMouseLeave={onMouseLeave}>
+                                        <FaStar data-empty size='40' color='#d1d5d9'/>
+                                        <FaStar data-full size='40' color='#FA722E'/>
                                     </div>
                                 ))}
                             </div>
-                            <textarea placeholder='리뷰 작성 시 광고 및 욕설, 비속어나 타인을 비방하는 문구를 사용하시면 비공개될 수 있습니다.'></textarea>
+                            <textarea onKeyUp={onKeyUp} placeholder='리뷰 작성 시 광고 및 욕설, 비속어나 타인을 비방하는 문구를 사용하시면 비공개될 수 있습니다.'></textarea>
+                            <div className='foot'>
+                                <div className='submit-box'>
+                                    <div className='sub-button-white' onClick={onClickCaution}><GiHazardSign size='15'/>리뷰 작성 유의사항</div>
+                                    <div className='ch'>
+                                        <div className='checkbox' onClick={onClickCheckbox}>
+                                            <div className='box'></div>
+                                            <div className='label'>스포일러가 있습니다.</div>
+                                        </div>
+                                        <div className='main-button-blue'>리뷰 남기기</div>
+                                    </div>
+                                </div>
+                                <div className='caution'>
+                                    <span className='bold'>건전한 리뷰 정착 및 양질의 리뷰를 위해 아래 해당하는 리뷰는 비공개 조치될 수 있음을 안내드립니다.</span>
+                                    <br/>
+                                    <br/><span>1. 타인에게 불쾌감을 주는 욕설</span>
+                                    <br/><span>2. 비속어나 타인을 비방하는 내용</span>
+                                    <br/><span>3. 특정 종교, 민족, 계층을 비방하는 내용</span>
+                                    <br/><span>4. 해당 도서의 줄거리나 리디북스 서비스 이용과 관련이 없는 내용</span>
+                                    <br/><span>5. 의미를 알 수 없는 내용</span>
+                                    <br/><span>6. 광고 및 반복적인 글을 게시하여 서비스 품질을 떨어트리는 내용</span>
+                                    <br/><span>7. 저작권상 문제의 소지가 있는 내용</span>
+                                    <br/><span>8. 다른 리뷰에 대한 반박이나 논쟁을 유발하는 내용</span>
+                                    <br/><span>* 결말을 예상할 수 있는 리뷰는 자제하여 주시기 바랍니다.</span>
+                                    <br/><br/>
+                                    <span className='bold'>이 외에도 건전한 리뷰 문화 형성을 위한 운영 목적과 취지에 맞지 않는 내용은 담당자에 의해 리뷰가 비공개 처리가 될 수 있습니다.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </DescPanel>
@@ -359,12 +405,26 @@ const style = (isAuthor: boolean)=> (css`
                 width: 100%;
                 margin-left: 35px;
                 .cate {
+                    display: flex;
                     font-size: 12px;
                     color: var(--gray_70);
                     transition: .2s;
-                    cursor: pointer;
-                    &:hover {
-                        color: var(--dodgeblue_40);
+                    div {
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                        &:hover {
+                            color: var(--dodgeblue_40);
+                        }
+                        &:not(:first-child)::before {
+                            content: '›';
+                            font-weight: bold;
+                            margin: 0 8px;
+                            transform: scale(1.3, 1.9) translateY(-2px);
+                            &:hover {
+                                color: var(--gray_70);
+                            }
+                        }
                     }
                 }
                 .title {
@@ -615,9 +675,11 @@ const style = (isAuthor: boolean)=> (css`
             }
             .book-list {
                 display: flex;
+                overflow: hidden;
                 .book {
                     width: 90px;
                     margin-right: 40px;
+                    cursor: pointer;
                     .img-box {
                         position: relative;
                         img {
@@ -643,9 +705,9 @@ const style = (isAuthor: boolean)=> (css`
             .sub-btn {
                 display: flex;
                 justify-content: flex-end;
-                margin-top: 10px;
+                margin-top: 15px;
                 .sub-button-white {
-                    height: 23px;
+                    height: 30px;
                     &::after {
                         content: '›';
                         font-size: 18px;
@@ -713,12 +775,14 @@ const style = (isAuthor: boolean)=> (css`
                 }
             }
             .input-rate {
+                position: relative;
                 flex-grow: 1; 
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 padding: 0 0 0 15px;
                 .eval-text {
+                    position: absolute;
                     text-align: center;
                     font-size: 18px;
                     font-weight: bold;
@@ -726,43 +790,176 @@ const style = (isAuthor: boolean)=> (css`
                     margin-bottom: 13px;
                     [class*='rt-'] {
                         display: none;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        &.blue {
+                            color: white;
+                            width: 110px;
+                            height: 32px;
+                            transform: translateY(-10px);
+                            font-size: 14px;
+                            border-radius: 4px;
+                            background-color: var(--dodgeblue_50);
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                bottom: -4px;
+                                left: 50%;
+                                transform: translateX(-50%) rotate(45deg);
+                                width: 9px;
+                                height: 9px;
+                                background-color: var(--dodgeblue_50);
+                            }
+                        }
                     }
+                    
                 }
                 .star-box {
                     display: flex;
+                    flex-direction: row-reverse;
+                    margin-top: 38px;
+                    cursor: pointer;
                     .stars {
                         display: flex;
                         align-items: center;
+                        padding: 0 10px;
                         &:not(:first-child) {
-                            &::before {
-                                content: '|';
-                                font-size: 7px;
-                                color: var(--slategray_5);
-                                transform: translate(0,0) scaleY(3.5);
-                                margin: 0 10px;
+                            border-right: 1px solid var(--slategray_5); 
+                        }
+                        &:hover {
+                            [data-full], & ~ .stars [data-full] {
+                                display: block;
+                            }
+                            [data-empty], & ~ .stars [data-empty] {
+                                display: none;
                             }
                         }
-                        svg {
-
+                        [data-full] {
+                            display: none;
                         }
-                    }
-                    [data-empty] {
-                        display: none;
                     }
                 }
                 textarea {
                     width: 100%;
-                    min-height: 120px;
+                    min-height: 110px;
                     margin-top: 27px;
                     padding: 15px;
                     border: 2px solid var(--gray_20);
-                    color: var(--gray_50);
+                    color: var(--gray_20);
                     font-size: 13px;
                     font-weight: bold;
                     border-radius: 4px;
                     line-height: 22px;
+                    resize: none;
+                    overflow-wrap: break-word;
+                    overflow: hidden;
                     &::placeholder {
                         color: var(--gray_50);
+                        font-size: 12px;
+                    }
+                    &:focus {
+                        color: var(--gray_50);
+                        border-color: var(--gray_50);
+                        &::placeholder {
+                            color: var(--gray_20);
+                        }
+                    }
+                }
+                .foot {
+                    width: 100%;
+                    margin-top: 12px;
+                    display: flex;
+                    flex-direction: column;
+                    .submit-box {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        .sub-button-white {
+                            height: 31px;
+                            svg {
+                                margin-right: 5px;
+                            }   
+                            &.sel {
+                                color: var(--gray_70);
+                            }
+                        }
+                        .ch {
+                            display: flex;
+                            .checkbox {
+                                display: flex;
+                                align-items: center;
+                                margin-right: 15px;
+                                cursor: pointer;
+                                transition: .3s;
+                                &:hover {
+                                    & .box {
+                                        border-color: var(--dodgeblue_50);
+                                    }
+                                }
+                                &.sel {
+                                    .box {
+                                        border-color: var(--dodgeblue_50);
+                                        &::before {
+                                            opacity: 1;
+
+                                        }
+                                    }
+                                }
+                                .box {
+                                    position: relative;
+                                    width: 18px;
+                                    height: 18px;
+                                    margin-right: 6px;
+                                    border: 1px solid var(--gray_20);
+                                    border-radius: 1px;
+                                    transition: .3s;
+                                    &::before {
+                                        opacity: 0;
+                                        transition: .3s;
+                                        position: absolute;
+                                        left: 0;
+                                        content: '✔';
+                                        color: white;
+                                        text-align: center;
+                                        line-height: 16px;
+                                        width: 18px;
+                                        height: 18px;
+                                        background-color: var(--dodgeblue_50);
+                                        border-radius: 1px;
+                                    }
+                               }
+                               .label {
+                                   font-size: 13px;
+                                   font-weight: bold;
+                                   color: var(--slategray_60);
+                               }
+                            }
+                            .main-button-blue {
+                                height: 32px;
+                                font-size: 13px;
+                                padding: 0 16px;
+                            }
+                        }
+                    }
+                    .caution {
+                        display: none;
+                        width: 100%;
+                        padding: 20px;
+                        margin-top: 10px;
+                        background-color: var(--slategray_5);
+                        white-space: pre-line;
+                        &.open {
+                            display: block;
+                        }
+                        span {
+                            color: var(--slategray_50);
+                            font-size: 12px;
+                            &.bold {
+                                font-weight: bold;
+                                color: black;
+                            }
+                        }
                     }
                 }
             }
