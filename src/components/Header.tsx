@@ -46,9 +46,9 @@ function Header() {
                         <div className='btn'>
                             캐시충전<FaCoins size='11'/>
                         </div>
-                        <div className='btn'>
+                        <Link to='/login' className='btn'>
                             내 서재
-                        </div>
+                        </Link>
                     </div>
                 </div>
                 <div className='link-box'>

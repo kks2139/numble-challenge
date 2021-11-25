@@ -15,10 +15,11 @@ import BookSlider from "./BookSlider"
 import BookCard from "./BookCard"
 import AuthorPage from "./page/AuthorPage"
 import BookDetailPage from "./page/BookDetailPage"
-import SliderMoveButton from "./page/SliderMoveButton"
+import SliderMoveButton from "./SliderMoveButton"
 import BookGridSlider from "./BookGridSlider"
 import EventDetailPage from "./page/EventDetailPage"
 import DescPanel from "./DescPanel"
+import LoginPage from "./page/LoginPage"
 
 export {
     HomePage,
@@ -41,5 +42,6 @@ export {
     SliderMoveButton,
     BookGridSlider,
     EventDetailPage,
-    DescPanel
+    DescPanel,
+    LoginPage
 }

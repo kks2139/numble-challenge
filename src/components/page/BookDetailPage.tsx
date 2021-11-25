@@ -12,6 +12,8 @@ import {AiFillAndroid, AiFillWindows} from 'react-icons/ai';
 import {GrAppleAppStore} from 'react-icons/gr';
 import {GiHazardSign} from 'react-icons/gi';
 
+type Div = React.MouseEvent<HTMLDivElement>;
+
 interface Params {
     book: BookData
 }
@@ -24,7 +26,9 @@ function BookDetailPage() {
     const rateRef = useRef<HTMLDivElement | null>(null);
     const [showImgModal, setShowImgModal] = useState(false);
     const [isAuthor, setIsAutor] = useState(true);
-
+    const [starRate, setStarRate] = useState(-1);
+    const [isInputDone, setIsInputDone] = useState(false);
+    
     const getStars = ()=>{
         let num = book.starRate.rate;
         return (
@@ -55,34 +59,68 @@ function BookDetailPage() {
             if(el instanceof HTMLDivElement){
                 el.style.display = index === el.dataset.idx ? 'flex' : 'none';
             }
-        })
+        });
+        if(index === '0' && starRate > -1){
+            const selText = rateRef.current?.querySelector('.rt-selected') as HTMLDivElement;
+            selText.style.display = 'flex';
+        }
     }
     
-    const onMouseOverStar = (e: React.MouseEvent<HTMLDivElement>)=>{
+    const onMouseOverStar = (e: Div)=>{
         const idx = e.currentTarget.dataset.idx;
         setStarHover(idx || '0');
     }
 
     const onMouseLeave = ()=>{
         setStarHover('0');
+        // colorSelectedStars();
     }
     
-    const onClickPerson = (e: React.MouseEvent<HTMLDivElement>)=>{
+    const onClickPerson = (e: Div)=>{
         const trans = e.currentTarget!.dataset.trans;
         setIsAutor(!trans);
     }
+    
+    const onClickStarCancel = (e: Div)=>{
+        setStarRate(-1);
+    }
 
-    const onClickCaution = (e: React.MouseEvent<HTMLDivElement>)=>{
+    const onClickCaution = (e: Div)=>{
         e.currentTarget.classList.toggle('sel');
         divRef.current?.querySelector('.caution')?.classList.toggle('open');
     }
 
-    const onClickCheckbox = (e: React.MouseEvent<HTMLDivElement>)=>{
+    const onClickCheckbox = (e: Div)=>{
         e.currentTarget.classList.toggle('sel');
     }
 
-    const onClickStar = ()=>{
+    const onClickStar = (e: Div)=>{
+        const {idx} = e.currentTarget.dataset!;
+        setStarRate(pre => Number(idx));
+        colorSelectedStars();
+    }
 
+    const onClickReview = ()=>{
+        if(!isInputDone){
+            
+        }
+    }
+
+    const colorSelectedStars = ()=>{
+        const starList = rateRef.current?.querySelectorAll(`.star-box .stars`);
+        if(starRate > -1) {
+            starList?.forEach(s => {
+                s.classList.remove('sel');
+            });
+            for(let i=1; i<=starRate; i++){
+                const star = rateRef.current?.querySelector(`.star-box .stars[data-idx='${i}']`) as HTMLDivElement;
+                star.classList.add('sel');
+            }
+        }else{
+            starList?.forEach(s => {
+                s.classList.remove('sel');
+            });
+        }
     }
 
     const onKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>)=>{
@@ -91,14 +129,27 @@ function BookDetailPage() {
         breaks = breaks < 0 ? 0 : breaks;
 
         el.style.height = `${breaks * 22 < 50 ? 110 : breaks * 22}px`;
+        setIsInputDone(checkInputDone());
     }
+
+    const checkInputDone = ()=>{
+        const ta = divRef.current?.querySelector('[name=review]') as HTMLTextAreaElement;
+        return starRate > -1 && ta.value && ta.value.length > 9 ? true : false;
+    }
+
+    const addPointNumber = (n: number)=> ('' + n).length === 1 ? n + '.0' : n;
 
     useEffect(()=>{
         setStarHover('0');
     }, []);
 
+    useEffect(()=>{
+        colorSelectedStars();
+        setIsInputDone(checkInputDone());
+    }, [starRate]);
+
     return (
-        <div css={style(isAuthor)} ref={divRef}>
+        <div css={style(isAuthor, starRate)} ref={divRef}>
             {showImgModal ? 
                 <div className='img-modal' onClick={toggleImageModal}>
                     <div className='wrapper'>
@@ -259,7 +310,7 @@ function BookDetailPage() {
                     <div className='evaluate-box'>
                         <div className='rate-box'>
                             <div className='buyer-rate'>구매자 별점</div>
-                            <div className='rate'>{('' + book.starRate.rate).length === 1 ? book.starRate.rate + '.0' : book.starRate.rate}</div>
+                            <div className='rate'>{addPointNumber(book.starRate.rate)}</div>
                             <div className=''>{getStars()}</div>
                             <ul className='each-rate'>
                                 {Array(5).fill(1).map((a, i)=> (
@@ -277,7 +328,14 @@ function BookDetailPage() {
                         </div>
                         <div className='input-rate' ref={rateRef}>
                             <div className='eval-text'>
-                                <div className='rt-0' data-idx='0'>이 책을 평가해주세요!</div>
+                                {starRate > -1 ? 
+                                    <div className='rt-selected' data-star-sel>
+                                        <div className='txt'>내가 남긴 별점</div>
+                                        <div className='num'>{addPointNumber(starRate)}</div>
+                                        <div className='cancel' onClick={onClickStarCancel}>취소</div>
+                                    </div> :
+                                    <div className='rt-0' data-idx='0'>이 책을 평가해주세요!</div>
+                                }
                                 <div className='rt-1 blue' data-idx='1'>별로에요</div>
                                 <div className='rt-2 blue' data-idx='2'>그저 그래요</div>
                                 <div className='rt-3 blue' data-idx='3'>보통이에요</div>
@@ -292,7 +350,7 @@ function BookDetailPage() {
                                     </div>
                                 ))}
                             </div>
-                            <textarea onKeyUp={onKeyUp} placeholder='리뷰 작성 시 광고 및 욕설, 비속어나 타인을 비방하는 문구를 사용하시면 비공개될 수 있습니다.'></textarea>
+                            <textarea name='review' onKeyUp={onKeyUp} placeholder='리뷰 작성 시 광고 및 욕설, 비속어나 타인을 비방하는 문구를 사용하시면 비공개될 수 있습니다.'></textarea>
                             <div className='foot'>
                                 <div className='submit-box'>
                                     <div className='sub-button-white' onClick={onClickCaution}><GiHazardSign size='15'/>리뷰 작성 유의사항</div>
@@ -301,7 +359,7 @@ function BookDetailPage() {
                                             <div className='box'></div>
                                             <div className='label'>스포일러가 있습니다.</div>
                                         </div>
-                                        <div className='main-button-blue'>리뷰 남기기</div>
+                                        <button className='main-button-blue' disabled={!isInputDone} onClick={onClickReview}>리뷰 남기기</button>
                                     </div>
                                 </div>
                                 <div className='caution'>
@@ -331,7 +389,7 @@ function BookDetailPage() {
     );
 }
 
-const style = (isAuthor: boolean)=> (css`
+const style = (isAuthor: boolean, starRate: number) => (css`
     width: 1016px;
     display: flex;
     padding: 0 20px 30px 45px;
@@ -759,7 +817,6 @@ const style = (isAuthor: boolean)=> (css`
                                 box-shadow: inset 0px -2px 5px -3px black;
                             }    
                         }
-
                     }
                 }
                 .rate-num {
@@ -783,7 +840,7 @@ const style = (isAuthor: boolean)=> (css`
                 padding: 0 0 0 15px;
                 .eval-text {
                     position: absolute;
-                    text-align: center;
+                    // text-align: center;
                     font-size: 18px;
                     font-weight: bold;
                     color: var(--gray_40);
@@ -813,7 +870,30 @@ const style = (isAuthor: boolean)=> (css`
                             }
                         }
                     }
-                    
+                    .rt-selected {
+                        ${starRate > -1 ? 'display: flex;' : 'display: none;'}
+                        transform: translateY(-10px);
+                        .txt {
+                            font-size: 14px;
+                            color: var(--slategray_60);
+                        }
+                        .num {
+                            font-size: 30px;
+                            font-weight: bold;
+                            color: var(--orange_40);   
+                            margin: 0 9px;
+                            transform: translateY(-3px);
+                        }
+                        .cancel {
+                            font-size: 12px;
+                            color: var(--slategray_30);
+                            cursor: pointer;
+                            transition: .3s;
+                            &:hover {
+                                color: var(--dodgeblue_50);
+                            }
+                        }
+                    }
                 }
                 .star-box {
                     display: flex;
@@ -829,14 +909,22 @@ const style = (isAuthor: boolean)=> (css`
                         }
                         &:hover {
                             [data-full], & ~ .stars [data-full] {
-                                display: block;
+                                display: block !important;
                             }
                             [data-empty], & ~ .stars [data-empty] {
-                                display: none;
+                                display: none !important;
                             }
                         }
                         [data-full] {
                             display: none;
+                        }
+                        &.sel {
+                            [data-full] {
+                                display: block;
+                            }
+                            [data-empty] {
+                                display: none;
+                            }
                         }
                     }
                 }
