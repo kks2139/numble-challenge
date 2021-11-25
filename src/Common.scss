@@ -196,6 +196,13 @@ body {
     font-size: 15px;
     border: 1px solid var(--dodgeblue_60);
     background-color: var(--dodgeblue_50);
+    &:disabled {
+        cursor: unset;
+        opacity: .5;
+        &:hover {
+            background-color: var(--dodgeblue_50);
+        }
+    }
     &:hover {
         background-color: var(--dodgeblue_60);
     }

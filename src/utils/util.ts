@@ -1,6 +1,9 @@
 export const request = async (api: string)=>{
     let url = '';
     switch(api){
+        case 'login':
+            url = 'user.json';
+            break;
         case 'getEvents':
             url = 'event.json';
             break;
@@ -50,3 +53,19 @@ export const translate = (str: string)=>{
 
     return result.length > 0 ? result[0].to : str; 
 }
+
+export const checkSession = (callback?: ()=>void)=>{
+    const id = sessionStorage.getItem('id');
+    if(id && callback){
+        callback();
+    }
+}
+
+
+// {
+//     "id" : "numble1130",
+//     "name" : "산넘블",
+//     "emailAddr" : "numble1130@gmail.com",
+//     "emailAuthorized" : "true",
+//     "adult" : "false"
+// }
