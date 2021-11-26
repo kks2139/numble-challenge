@@ -54,7 +54,7 @@ export const translate = (str: string)=>{
     return result.length > 0 ? result[0].to : str; 
 }
 
-export const checkSession = (callback?: ()=>void)=>{
+export const checkSession = ()=>{
     const user = sessionStorage.getItem('user');
     return user && JSON.parse(user) && JSON.parse(user).id;
 }

@@ -12,9 +12,11 @@ import {checkSession} from '../utils/util';
 
 interface Props {
     currentUser: User | null
+    onLink: (param: string)=> void
+    currentPath: string
 }
 
-function Header({currentUser}: Props) {
+function Header({currentUser, onLink, currentPath}: Props) {
     const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement | null>(null);
     const [hasSession, setHasSession] = useState(false);
@@ -24,12 +26,12 @@ function Header({currentUser}: Props) {
     }
 
     const onClickTitle = (e: React.MouseEvent<HTMLElement>)=>{
-        toggleSelected(divRef.current?.querySelector('.link-btn:first-child')!);
+        toggleSelected('/');
     }
 
     const onClickLink = (e: React.MouseEvent<HTMLDivElement>)=>{
-        toggleSelected(e.currentTarget.querySelector('.link-btn')!);
         const to = e.currentTarget.dataset.to!;
+        toggleSelected(to);
         if(checkSession()){
             navigate(to!);
         }else{
@@ -37,16 +39,17 @@ function Header({currentUser}: Props) {
                 navigate('/login');
             }
         }
+        onLink(to);
     }
     
-    const toggleSelected = (node: HTMLElement)=>{
+    const toggleSelected = (path: string)=>{
         divRef.current?.querySelectorAll('.link-box .sel').forEach(el => el.classList.remove('sel'));
-        node.classList.add('sel');
+        divRef.current?.querySelector(`[data-to='${path}'] .link-btn`)?.classList.add('sel');
     }
 
     useEffect(()=>{
         setHasSession(checkSession());
-    }, [currentUser]);
+    }, [currentUser, currentPath]);
 
     return (
         <div css={style} ref={divRef}>

@@ -7,9 +7,10 @@ import { User } from '../../utils/interfaces';
 
 interface Props {
     onLogin: (param: User)=> void
+    currentPath: string
 }
 
-function LoginPage({onLogin}: Props) {
+function LoginPage({onLogin, currentPath}: Props) {
     const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement | null>(null);
     const [warn, setWran] = useState('');
@@ -32,11 +33,11 @@ function LoginPage({onLogin}: Props) {
         }
     }
 
-    const setSession = (user: User)=>{
+    const loginSuccess = (user: User)=>{
         user.pw = '';
         onLogin(user);
         sessionStorage.setItem('user', JSON.stringify(user));
-        navigate('/');
+        navigate(currentPath || '/');
     }
 
     const onClickSignup = ()=>{
@@ -48,7 +49,7 @@ function LoginPage({onLogin}: Props) {
             const user: User = await request('login');
             if(user) {
                 if(inputs.id === user.id && inputs.pw === user.pw){
-                    setSession(user);
+                    loginSuccess(user);
                 }else{
                     setWran('아이디 또는 비밀번호를 확인해주세요.');
                 }

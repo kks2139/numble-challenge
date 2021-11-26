@@ -3,21 +3,17 @@ import React, { useEffect } from 'react';
 import {css} from '@emotion/react';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux-modules/index';
-import {LoginPage} from '../components/index';
+import {CartPage} from '../components/index';
 import {User} from '../utils/interfaces';
 import {setUser} from '../redux-modules/app';
 
-function LoginPageContainer() {
+function CartPageContainer() {
     const dispatch = useDispatch();
-    const {currentPath} = useSelector((state: RootState)=> state.app);
-
-    const onLogin = (user: User)=>{
-        dispatch(setUser(user));
-    }
+    const {cartList} = useSelector((state: RootState)=> state.cartPage);
 
     return (
         <div css={style}>
-            <LoginPage onLogin={onLogin} currentPath={currentPath}/>
+            <CartPage />
         </div>
     );
 }
@@ -25,4 +21,4 @@ function LoginPageContainer() {
 const style = css`
 `;
 
-export default LoginPageContainer;
+export default CartPageContainer;

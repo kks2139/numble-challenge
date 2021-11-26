@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import {css} from '@emotion/react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import {HomePage, NotificationPage, CartPage, MyRidiPage, Header, Footer, SignupPage} from './components/index';
-import {HeaderContainer, LoginPageContainer} from './containers/index';
+import {HeaderContainer, LoginPageContainer, NotificationPageContainer} from './containers/index';
 
 function App() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function App() {
       <main>
         <Routes>
           <Route path='/*' element={<HomePage/>}/>
-          <Route path='/notification' element={<NotificationPage/>}/>
+          <Route path='/notification' element={<NotificationPageContainer/>}/>
           <Route path='/cart' element={<CartPage/>}/>
           <Route path='/myridi' element={<MyRidiPage/>}/>
           <Route path='/login' element={<LoginPageContainer/>}/>
