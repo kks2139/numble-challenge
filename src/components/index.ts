@@ -20,6 +20,7 @@ import BookGridSlider from "./BookGridSlider"
 import EventDetailPage from "./page/EventDetailPage"
 import DescPanel from "./DescPanel"
 import LoginPage from "./page/LoginPage"
+import SignupPage from "./page/SignupPage"
 
 export {
     HomePage,
@@ -43,5 +44,6 @@ export {
     BookGridSlider,
     EventDetailPage,
     DescPanel,
-    LoginPage
+    LoginPage,
+    SignupPage
 }

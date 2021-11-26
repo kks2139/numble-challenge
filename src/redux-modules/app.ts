@@ -1,27 +1,29 @@
-const DO_SOMETHING = 'app/DO_SOMETHING' as const;
+import {User} from '../utils/interfaces';
 
-export const doSomething = (arg: string)=> ({ 
-    type : DO_SOMETHING,
+const SET_USER = 'app/SET_USER' as const;
+
+export const setUser = (arg: User)=> ({ 
+    type : SET_USER,
     payload : arg
 });
 
 type actionType = 
-    | ReturnType<typeof doSomething>
+    | ReturnType<typeof setUser>
 
 type stateType = {
-    test: string
+    currentUser: User | null
 }
 
 const initState: stateType = {
-    test: ''
+    currentUser: null
 };
 
 function app(state: stateType = initState, action: actionType) {
     switch (action.type) {
-        case DO_SOMETHING:
+        case SET_USER:
             return {
                 ...state,
-                test: action.payload
+                currentUser: {...action.payload}
             };
         default:
             return state;

@@ -55,17 +55,7 @@ export const translate = (str: string)=>{
 }
 
 export const checkSession = (callback?: ()=>void)=>{
-    const id = sessionStorage.getItem('id');
-    if(id && callback){
-        callback();
-    }
+    const user = sessionStorage.getItem('user');
+    return user && JSON.parse(user) && JSON.parse(user).id;
 }
 
-
-// {
-//     "id" : "numble1130",
-//     "name" : "산넘블",
-//     "emailAddr" : "numble1130@gmail.com",
-//     "emailAuthorized" : "true",
-//     "adult" : "false"
-// }

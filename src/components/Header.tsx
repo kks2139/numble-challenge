@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {Link, useNavigate} from 'react-router-dom';
@@ -7,10 +7,17 @@ import {FaCoins, FaRegBell} from 'react-icons/fa';
 import {AiFillHome} from 'react-icons/ai';
 import {BsCart} from 'react-icons/bs';
 import {IoPersonOutline} from 'react-icons/io5';
+import {User} from '../utils/interfaces';
+import {checkSession} from '../utils/util';
 
-function Header() {
+interface Props {
+    currentUser: User | null
+}
+
+function Header({currentUser}: Props) {
     const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement | null>(null);
+    const [hasSession, setHasSession] = useState(false);
 
     const onSearchBook = (searchText: string)=>{
         
@@ -20,15 +27,26 @@ function Header() {
         toggleSelected(divRef.current?.querySelector('.link-btn:first-child')!);
     }
 
-    const onClickLink = (e: React.MouseEvent<HTMLAnchorElement>)=>{
+    const onClickLink = (e: React.MouseEvent<HTMLDivElement>)=>{
         toggleSelected(e.currentTarget.querySelector('.link-btn')!);
-        navigate(e.currentTarget.pathname);
+        const to = e.currentTarget.dataset.to!;
+        if(checkSession()){
+            navigate(to!);
+        }else{
+            if(to !== '/'){
+                navigate('/login');
+            }
+        }
     }
     
     const toggleSelected = (node: HTMLElement)=>{
         divRef.current?.querySelectorAll('.link-box .sel').forEach(el => el.classList.remove('sel'));
         node.classList.add('sel');
     }
+
+    useEffect(()=>{
+        setHasSession(checkSession());
+    }, [currentUser]);
 
     return (
         <div css={style} ref={divRef}>
@@ -43,43 +61,55 @@ function Header() {
                         <SearchBar onSearch={onSearchBook}/>
                     </div>
                     <div className='menu-box'>
-                        <div className='btn'>
-                            캐시충전<FaCoins size='11'/>
-                        </div>
-                        <Link to='/login' className='btn'>
-                            내 서재
-                        </Link>
+                        {hasSession ? 
+                            <>
+                                <div className='btn'>
+                                    캐시충전<FaCoins size='11'/>
+                                </div>
+                                <Link to='/' className='btn'>
+                                    내 서재
+                                </Link>
+                            </> :
+                            <>
+                                <Link to='/signup' className='btn'>
+                                    회원가입
+                                </Link>
+                                <Link to='/login' className='btn white'>
+                                    로그인
+                                </Link>
+                            </>
+                        }
                     </div>
                 </div>
                 <div className='link-box'>
-                    <Link to='/' onClick={onClickLink}>
+                    <div className='link' data-to='/' onClick={onClickLink}>
                         <div className='link-btn sel'>
                             <AiFillHome size='20'/>
                             <div className='txt'>홈</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
-                    <Link to='/notification' onClick={onClickLink}>
+                    </div>
+                    <div className='link' data-to='/notification' onClick={onClickLink}>
                         <div className='link-btn'>
                             <FaRegBell size='20'/>
                             <div className='txt'>알림</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
-                    <Link to='/cart' onClick={onClickLink}>
+                    </div>
+                    <div className='link' data-to='/cart' onClick={onClickLink}>
                         <div className='link-btn'>
                             <BsCart size='20'/>
                             <div className='txt'>카트</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
-                    <Link to='/myridi' onClick={onClickLink}>
+                    </div>
+                    <div className='link' data-to='/myridi' onClick={onClickLink}>
                         <div className='link-btn'>
                             <IoPersonOutline size='20'/>
                             <div className='txt'>마이리디</div>
                             <div className='underline'></div>
                         </div>
-                    </Link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,7 +173,7 @@ const style = css`
                     display: flex;
                     align-items: center;
                     border-radius: 3px;
-                    border: 1px solid white;
+                    border: 1px solid var(--dodgeblue_10);
                     color: white;
                     font-size: 13px;
                     font-weight: bold;
@@ -158,13 +188,22 @@ const style = css`
                     svg {
                         margin-left: 4px;
                     }
+                    &.white {
+                        background-color: white;
+                        color: var(--dodgeblue_50);
+                        border-color: unset;
+                        &:hover {
+                            background-color: var(--dodgeblue_10);
+                        }
+                    }
                 }
             }
         }
         .link-box {
             display: flex;
             height: 35px;
-            a {
+            .link {
+                color: white;
                 margin-right: 50px;
                 .link-btn {
                     position: relative;

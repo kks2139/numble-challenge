@@ -30,10 +30,10 @@ function BookContentPage({books, events, types, icons, onClickType}: Props) {
     const filterLotsAuthorCareer = ()=> books.filter(book => book.author.representatives.length > 1);
 
     const filterForGridSlider = ()=> books.slice(0, 9);
-
+    
     const getHourMin = ()=> {
         const arr = new Date().toTimeString().split(':');
-        return `${arr[0]}시 ${arr[0]}분`;
+        return `${arr[0]}시 ${arr[1]}분`;
     }
 
     const onClickImage = (imgUrl: string)=>{
@@ -85,6 +85,12 @@ function BookContentPage({books, events, types, icons, onClickType}: Props) {
                 </Panel>
                 <Panel title='베스트 셀러'>
                     <BookGridSlider bookList={filterForGridSlider()} width={80} height={113}/>
+                </Panel>
+                <Panel title='오늘, 리디의 발견'>
+                    <BookSlider bookList={filterLotsAuthorCareer()} hideRate={true}  hidePrice={true} hideTotal={true}/>
+                </Panel>
+                <Panel title='금주의 추천도서'>
+                    <BookSlider bookList={filterHighRateBooks()}  hidePrice={true} hideTotal={true}/>
                 </Panel>
             </section>
         </div>
