@@ -32,7 +32,7 @@ function BookCheckedListContainer({bookList, onDelete}: Props) {
     }
 
     return (
-        <div css={style}>
+        <div>
             <BookCheckList 
                 onDelete={onDelete} 
                 bookList={bookList}
@@ -41,8 +41,5 @@ function BookCheckedListContainer({bookList, onDelete}: Props) {
         </div>
     );
 }
-
-const style = css`
-`;
 
 export default BookCheckedListContainer;

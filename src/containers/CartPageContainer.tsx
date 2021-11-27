@@ -18,13 +18,10 @@ function CartPageContainer() {
     }
 
     return (
-        <div css={style}>
+        <div>
             <CartPage bookList={cartList} checkedList={checkedList} onBookDelete={onBookDelete}/>
         </div>
     );
 }
-
-const style = css`
-`;
 
 export default CartPageContainer;

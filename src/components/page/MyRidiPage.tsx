@@ -5,7 +5,12 @@ import {css} from '@emotion/react';
 function MyRidiPage() {
     return (
         <div css={style}>
-            마이리디
+            <div className='left-menu'>
+                
+            </div>
+            <div className='main-content'>
+
+            </div>
         </div>
     );
 }

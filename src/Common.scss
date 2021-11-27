@@ -198,6 +198,7 @@ body {
     font-size: 15px;
     border: 1px solid var(--dodgeblue_60);
     background-color: var(--dodgeblue_50);
+    box-shadow: 0 4px 6px -4px var(--dodgeblue_40);
     &:disabled {
         cursor: unset;
         opacity: .5;
