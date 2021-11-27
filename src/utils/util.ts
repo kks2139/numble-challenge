@@ -54,18 +54,8 @@ export const translate = (str: string)=>{
     return result.length > 0 ? result[0].to : str; 
 }
 
-export const checkSession = (callback?: ()=>void)=>{
-    const id = sessionStorage.getItem('id');
-    if(id && callback){
-        callback();
-    }
+export const checkSession = ()=>{
+    const user = sessionStorage.getItem('user');
+    return user && JSON.parse(user) && JSON.parse(user).id;
 }
 
-
-// {
-//     "id" : "numble1130",
-//     "name" : "산넘블",
-//     "emailAddr" : "numble1130@gmail.com",
-//     "emailAuthorized" : "true",
-//     "adult" : "false"
-// }

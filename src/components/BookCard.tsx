@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {BookData} from '../utils/interfaces';
@@ -36,7 +36,7 @@ function BookCard({
     onAuthorClick: onAuthorClick
 }: Props) {
     const divRef = useRef<HTMLDivElement | null>(null);
-    const BadgeShow = badge ? badge : badge === 'none' ? false : ['waitFree', 'discount', 'rent'][Math.floor(Math.random() * 10 % 3)];
+    const BadgeShow = useMemo(()=> badge ? badge : badge === 'none' ? false : ['waitFree', 'discount', 'rent'][Math.floor(Math.random() * 10 % 3)], [book]);
 
     const getStars = ()=>{
         let num = book.starRate.rate;

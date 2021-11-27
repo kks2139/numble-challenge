@@ -64,7 +64,7 @@ function BookSlider({
     }
 
     const onBookClick = (book: BookData)=>{
-        navigate('/books', {
+        navigate('/bookdetail', {
             state: {
                 book: book
             }

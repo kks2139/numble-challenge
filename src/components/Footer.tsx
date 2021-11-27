@@ -9,30 +9,30 @@ function Footer() {
     return (
         <div css={style}>
             <div className='top-box'>
-                <div className='title-box'>
-                    <div className='txt'>고객센터</div>
-                    <div className='wall'></div>
-                    <div className='txt'>공지사항</div>
-                </div>
+                <ul className='title-box'>
+                    <li className='txt'><span>고객센터</span></li>
+                    <li className='wall'></li>
+                    <li className='txt'><span>공지사항</span></li>
+                </ul>
                 <ul className='detail-box'>
                     <li><span className='bold'>RIDI</span>PAPER</li>
-                    <li>제휴카드</li>
-                    <li>뷰어 다운로드</li>
-                    <li>리디캐시 충전</li>
+                    <li><span>제휴카드</span></li>
+                    <li><span>뷰어 다운로드</span></li>
+                    <li><span>리디캐시 충전</span></li>
                 </ul>
                 <ul className='detail-box'>
-                    <li>콘텐츠 제공 문의</li>
-                    <li>CP 사이트</li>
-                    <li>사업 제휴 문의</li>
-                    <li>리디셀렉트 B2B</li>
+                    <li><span>콘텐츠 제공 문의</span></li>
+                    <li><span>CP 사이트</span></li>
+                    <li><span>사업 제휴 문의</span></li>
+                    <li><span>리디셀렉트 B2B</span></li>
                 </ul>
                 <ul className='detail-box'>
-                    <li>페이스북</li>
-                    <li>인스타그램</li>
+                    <li><span>페이스북</span></li>
+                    <li><span>인스타그램</span></li>
                 </ul>
                 <ul className='detail-box'>
-                    <li>회사소개</li>
-                    <li>인재채용<div className='new'>N</div></li>
+                    <li><span>회사소개</span></li>
+                    <li><span className='flex'>인재채용<div className='new'>N</div></span></li>
                 </ul>
             </div>
             <div className='corp-box'>
@@ -83,9 +83,11 @@ const style = css`
             .txt {
                 font-size: 20px;
                 font-weight: bold;
-                cursor: pointer;
-                &:hover {
-                    color: var(--slategray_30);
+                span {
+                    cursor: pointer;
+                    &:hover {
+                        color: var(--slategray_30);
+                    }
                 }
             }
             .wall {
@@ -102,7 +104,18 @@ const style = css`
                 width: 140px;
                 font-size: 14px;
                 margin-bottom: 16px;
-                cursor: pointer;
+                span {
+                    cursor: pointer;
+                    &:hover {
+                        color: var(--slategray_30);
+                        .new {
+                            filter: brightness(.8);
+                        }
+                    }
+                    &.flex {
+                        display: flex;
+                    }
+                }
                 .bold {
                     font-weight: bold;
                 }
@@ -118,12 +131,6 @@ const style = css`
                     color: var(--slategray_90);
                     margin: 2px 0 0 5px;
                     background-color: var(--dodgeblue_40);
-                }
-                &:hover {
-                    color: var(--slategray_30);
-                    .new {
-                        filter: brightness(.8);
-                    }
                 }
             }
         }

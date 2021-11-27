@@ -49,7 +49,7 @@ function BookGridSlider({bookList, width=110, height}: Props) {
     }
 
     const onBookClick = (book: BookData)=>{
-        navigate('/books', {
+        navigate('/bookdetail', {
             state: {
                 book: book
             }
@@ -57,7 +57,7 @@ function BookGridSlider({bookList, width=110, height}: Props) {
     }
     const onTitleClick = (e: React.MouseEvent<HTMLDivElement | null>)=>{
         const book = bookList.filter(b => b.id === Number(e.currentTarget.dataset.book))[0];
-        navigate('/books', {
+        navigate('/bookdetail', {
             state: {
                 book: book
             }

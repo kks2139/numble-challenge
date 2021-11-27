@@ -147,6 +147,8 @@
 ul {
     list-style: none;
     padding-inline-start: unset;
+    margin-block-start: unset;
+    margin-block-end: unset;
 }
 
 a {
@@ -196,6 +198,7 @@ body {
     font-size: 15px;
     border: 1px solid var(--dodgeblue_60);
     background-color: var(--dodgeblue_50);
+    box-shadow: 0 4px 6px -4px var(--dodgeblue_40);
     &:disabled {
         cursor: unset;
         opacity: .5;
@@ -206,6 +209,9 @@ body {
     &:hover {
         background-color: var(--dodgeblue_60);
     }
+    &.nohover {
+        background-color: var(--dodgeblue_50);
+    }
 }
 
 .main-button-white {
@@ -213,6 +219,7 @@ body {
     color: var(--dodgeblue_50);
     border: 1px solid var(--dodgeblue_50);
     box-shadow: 0 1px 3px 0px #afd3ff;
+    background-color: white;
     &:hover {
         background-color: var(--dodgeblue_5);
     }
@@ -231,7 +238,11 @@ body {
     transition: .3s;
     cursor: pointer;
     box-shadow: 0 2px 2px 0px var(--slategray_5);
+    background-color: white;
     &:hover {
         background-color: var(--slategray_5);
+    }
+    &.nohover {
+        background-color: white;
     }
 }

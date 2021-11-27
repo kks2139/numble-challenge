@@ -4,6 +4,7 @@ export interface User {
     emailAddr: string
     emailAuthorized: string
     adult: string
+    pw: string
 }
 
 export interface Event {
