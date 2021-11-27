@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
-import {HomePage, NotificationPage, CartPage, MyRidiPage, Header, Footer, SignupPage} from './components/index';
-import {HeaderContainer, LoginPageContainer, NotificationPageContainer} from './containers/index';
+import {HomePage, MyRidiPage, Footer, SignupPage} from './components/index';
+import {HeaderContainer, LoginPageContainer, NotificationPageContainer, CartPageContainer} from './containers/index';
 
 function App() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function App() {
         <Routes>
           <Route path='/*' element={<HomePage/>}/>
           <Route path='/notification' element={<NotificationPageContainer/>}/>
-          <Route path='/cart' element={<CartPage/>}/>
+          <Route path='/cart' element={<CartPageContainer/>}/>
           <Route path='/myridi' element={<MyRidiPage/>}/>
           <Route path='/login' element={<LoginPageContainer/>}/>
           <Route path='/signup' element={<SignupPage/>}/>

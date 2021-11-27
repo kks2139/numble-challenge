@@ -4,16 +4,22 @@ import {css} from '@emotion/react';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux-modules/index';
 import {CartPage} from '../components/index';
-import {User} from '../utils/interfaces';
+import {BookData, User} from '../utils/interfaces';
 import {setUser} from '../redux-modules/app';
+import { removeBook, removeCheckedBook } from '../redux-modules/cartPage';
 
 function CartPageContainer() {
     const dispatch = useDispatch();
-    const {cartList} = useSelector((state: RootState)=> state.cartPage);
+    const {cartList, checkedList} = useSelector((state: RootState)=> state.cartPage);
+
+    const onBookDelete = (book: BookData)=>{
+        dispatch(removeBook(book.id));
+        dispatch(removeCheckedBook(book.id));
+    }
 
     return (
         <div css={style}>
-            <CartPage />
+            <CartPage bookList={cartList} checkedList={checkedList} onBookDelete={onBookDelete}/>
         </div>
     );
 }

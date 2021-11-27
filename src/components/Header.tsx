@@ -14,9 +14,10 @@ interface Props {
     currentUser: User | null
     onLink: (param: string)=> void
     currentPath: string
+    cartItems: number
 }
 
-function Header({currentUser, onLink, currentPath}: Props) {
+function Header({currentUser, onLink, currentPath, cartItems}: Props) {
     const navigate = useNavigate();
     const divRef = useRef<HTMLDivElement | null>(null);
     const [hasSession, setHasSession] = useState(false);
@@ -103,6 +104,7 @@ function Header({currentUser, onLink, currentPath}: Props) {
                         <div className='link-btn'>
                             <BsCart size='20'/>
                             <div className='txt'>카트</div>
+                            {cartItems > 0 ? <div className='cart-num'>{cartItems}</div> : null}
                             <div className='underline'></div>
                         </div>
                     </div>
@@ -220,6 +222,16 @@ const style = css`
                     }
                     .txt, svg {
                         transition: .3s;
+                    }
+                    .cart-num {
+                        position: absolute;
+                        left: 22px;
+                        top: -7px;
+                        color: var(--dodgeblue_50);
+                        background-color: white;
+                        padding: 1px 2px 2px 2px;
+                        font-size: 12px;
+                        border-radius: 5px;
                     }
                     .underline {
                         position: absolute;

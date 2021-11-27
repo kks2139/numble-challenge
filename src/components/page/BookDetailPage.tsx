@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {DescPanel, BookCard} from '../index';
+import {DescPanel, BookCard, Checkbox} from '../index';
 import {BookData} from '../../utils/interfaces'; 
 import {FaStar, FaStarHalfAlt, FaHeart, FaShoppingCart, FaGift} from 'react-icons/fa';
 import {IoBookSharp} from 'react-icons/io5';
@@ -18,7 +18,11 @@ interface Params {
     book: BookData
 }
 
-function BookDetailPage() {
+interface Props {
+    toCart: (param: BookData)=> void
+}
+
+function BookDetailPage({toCart}: Props) {
     const navigate = useNavigate();
     const location = useLocation();
     const {book}: Params = location.state;
@@ -90,8 +94,8 @@ function BookDetailPage() {
         divRef.current?.querySelector('.caution')?.classList.toggle('open');
     }
 
-    const onClickCheckbox = (e: Div)=>{
-        e.currentTarget.classList.toggle('sel');
+    const onClickCheckbox = (value: boolean)=>{
+        // e.currentTarget.classList.toggle('sel');
     }
 
     const onClickStar = (e: Div)=>{
@@ -104,6 +108,10 @@ function BookDetailPage() {
         if(!isInputDone){
             
         }
+    }
+
+    const onClickToCart = ()=>{
+        toCart(book);
     }
 
     const colorSelectedStars = ()=>{
@@ -212,7 +220,7 @@ function BookDetailPage() {
                         <div className='benefit-duration'>혜택 기간: 11.08.(월)~11.30.(화)</div>
                         <div className='buttons'>
                             <div className='sub-button-white'><FaHeart size='19'/></div>
-                            <div className='sub-button-white'><FaShoppingCart size='19'/></div>
+                            <div className='sub-button-white' onClick={onClickToCart}><FaShoppingCart size='19'/></div>
                             <div className='sub-button-white'><FaGift size='19'/></div>
                             <div className='main-button-blue'>구매하기</div>
                         </div>
@@ -355,10 +363,7 @@ function BookDetailPage() {
                                 <div className='submit-box'>
                                     <div className='sub-button-white' onClick={onClickCaution}><GiHazardSign size='15'/>리뷰 작성 유의사항</div>
                                     <div className='ch'>
-                                        <div className='checkbox' onClick={onClickCheckbox}>
-                                            <div className='box'></div>
-                                            <div className='label'>스포일러가 있습니다.</div>
-                                        </div>
+                                        <Checkbox label='스포일러가 있습니다.' onCheckChanged={onClickCheckbox}/>
                                         <button className='main-button-blue' disabled={!isInputDone} onClick={onClickReview}>리뷰 남기기</button>
                                     </div>
                                 </div>
@@ -974,55 +979,6 @@ const style = (isAuthor: boolean, starRate: number) => (css`
                         }
                         .ch {
                             display: flex;
-                            .checkbox {
-                                display: flex;
-                                align-items: center;
-                                margin-right: 15px;
-                                cursor: pointer;
-                                transition: .3s;
-                                &:hover {
-                                    & .box {
-                                        border-color: var(--dodgeblue_50);
-                                    }
-                                }
-                                &.sel {
-                                    .box {
-                                        border-color: var(--dodgeblue_50);
-                                        &::before {
-                                            opacity: 1;
-
-                                        }
-                                    }
-                                }
-                                .box {
-                                    position: relative;
-                                    width: 18px;
-                                    height: 18px;
-                                    margin-right: 6px;
-                                    border: 1px solid var(--gray_20);
-                                    border-radius: 1px;
-                                    transition: .3s;
-                                    &::before {
-                                        opacity: 0;
-                                        transition: .3s;
-                                        position: absolute;
-                                        left: 0;
-                                        content: '✔';
-                                        color: white;
-                                        text-align: center;
-                                        line-height: 16px;
-                                        width: 18px;
-                                        height: 18px;
-                                        background-color: var(--dodgeblue_50);
-                                        border-radius: 1px;
-                                    }
-                               }
-                               .label {
-                                   font-size: 13px;
-                                   font-weight: bold;
-                                   color: var(--slategray_60);
-                               }
-                            }
                             .main-button-blue {
                                 height: 32px;
                                 font-size: 13px;

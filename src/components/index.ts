@@ -21,6 +21,10 @@ import EventDetailPage from "./page/EventDetailPage"
 import DescPanel from "./DescPanel"
 import LoginPage from "./page/LoginPage"
 import SignupPage from "./page/SignupPage"
+import Checkbox from "./Checkbox"
+import Tab from "./Tab"
+import BookCheckList from "./BookCheckList"
+import BookRow from "./BookRow"
 
 export {
     HomePage,
@@ -45,5 +49,9 @@ export {
     EventDetailPage,
     DescPanel,
     LoginPage,
-    SignupPage
+    SignupPage,
+    Checkbox,
+    Tab,
+    BookCheckList,
+    BookRow
 }

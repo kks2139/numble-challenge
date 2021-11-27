@@ -5,7 +5,7 @@ import {Routes, Route, useNavigate} from 'react-router-dom';
 import {CategoryListPage} from '../index';
 import { Link } from 'react-router-dom';
 import {categories} from '../../utils/util';
-import {BookContentPageContainer} from '../../containers/index';
+import {BookContentPageContainer, BookDetailPageContainer} from '../../containers/index';
 import {EventDetailPage, BookDetailPage, AuthorPage} from '../index';
 
 interface Props {
@@ -57,7 +57,7 @@ function HomePage({}: Props) {
                     <Route path='' element={<BookContentPageContainer/>}/>
                     <Route path=':category' element={<BookContentPageContainer/>}/>
                     <Route path='event' element={<EventDetailPage/>}/>
-                    <Route path='books' element={<BookDetailPage/>}/>
+                    <Route path='bookdetail' element={<BookDetailPageContainer/>}/>
                     <Route path='author' element={<AuthorPage/>}/>
                 </Routes>
             </div>
