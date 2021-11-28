@@ -25,6 +25,7 @@ import Checkbox from "./Checkbox"
 import Tab from "./Tab"
 import BookCheckList from "./BookCheckList"
 import BookRow from "./BookRow"
+import ToastMessage from "./ToastMessage"
 
 export {
     HomePage,
@@ -53,5 +54,6 @@ export {
     Checkbox,
     Tab,
     BookCheckList,
-    BookRow
+    BookRow,
+    ToastMessage
 }

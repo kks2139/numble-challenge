@@ -50,6 +50,7 @@ function Header({currentUser, onLink, currentPath, cartItems}: Props) {
 
     useEffect(()=>{
         setHasSession(checkSession());
+        toggleSelected(currentPath);
     }, [currentUser, currentPath]);
 
     return (

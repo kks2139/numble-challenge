@@ -51,19 +51,12 @@ function BookContentPageContainer({}: Props) {
         getEventList();
     }, [category]);
 
-    return (
-        <div css={style}>
-            <BookContentPage 
+    return <BookContentPage 
                 books={books}
                 events={events}
                 types={bookTypes} 
                 icons={icons}
-                onClickType={onClickType}/>
-        </div>
-    );
+                onClickType={onClickType}/>;
 }
-
-const style = css`
-`;
 
 export default BookContentPageContainer;

@@ -16,14 +16,7 @@ function HeaderContainer() {
         dispatch(setCurrentPath(path));
     }
 
-    return (
-        <div css={style}>
-            <Header currentUser={currentUser} onLink={onLink} currentPath={currentPath} cartItems={cartList.length}/>
-        </div>
-    );
+    return <Header currentUser={currentUser} onLink={onLink} currentPath={currentPath} cartItems={cartList.length}/>;
 }
-
-const style = css`
-`;
 
 export default HeaderContainer;

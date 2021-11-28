@@ -31,15 +31,11 @@ function BookCheckedListContainer({bookList, onDelete}: Props) {
         }
     }
 
-    return (
-        <div>
-            <BookCheckList 
+    return <BookCheckList 
                 onDelete={onDelete} 
                 bookList={bookList}
                 checkedBookChanged={checkedBookChanged}
-                checkedAllBooksChanged={checkedAllBooksChanged}/>
-        </div>
-    );
+                checkedAllBooksChanged={checkedAllBooksChanged}/>;
 }
 
 export default BookCheckedListContainer;

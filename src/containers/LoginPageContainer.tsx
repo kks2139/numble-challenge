@@ -15,14 +15,7 @@ function LoginPageContainer() {
         dispatch(setUser(user));
     }
 
-    return (
-        <div css={style}>
-            <LoginPage onLogin={onLogin} currentPath={currentPath}/>
-        </div>
-    );
+    return <LoginPage onLogin={onLogin} currentPath={currentPath}/>;
 }
-
-const style = css`
-`;
 
 export default LoginPageContainer;

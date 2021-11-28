@@ -59,3 +59,42 @@ export const checkSession = ()=>{
     return user && JSON.parse(user) && JSON.parse(user).id;
 }
 
+export const myMenu = [
+    {
+        group: 'home',
+        title: '마이리디 홈',
+        children: []
+    },
+    {
+        group: 'book',
+        title: '책',
+        children: [
+            '선호작품',
+            '최근 조회한 작품',
+            '위시리스트',
+            '독서노트',
+            '신간알림',
+            '이벤트 알림 설정',
+        ]
+    },
+    {
+        group: 'buy',
+        title: '구매/혜택',
+        children: [
+            '결제 내역',
+            '리디캐시',
+            '리디포인트',
+            '쿠폰',
+        ]
+    },
+    {
+        group: 'my',
+        title: '개인',
+        children: [
+            '1:1문의',
+            '내 기기 관리',
+            '내 리뷰 관리',
+            '정보 변경',
+        ]
+    },
+]
