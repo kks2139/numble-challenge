@@ -87,3 +87,10 @@ export interface IconInfo {
     color: string
     cont?: string | HTMLOrSVGElement
 }
+
+export interface MessageInfo {
+    msg: string
+    warn?: boolean
+    link?: string
+    linkCallback?: ()=>void
+}

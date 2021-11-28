@@ -21,14 +21,7 @@ function NotificationPageContainer() {
         getAlerts();
     });
 
-    return (
-        <div css={style}>
-            <NotificationPage alerts={alerts}/>
-        </div>
-    );
+    return <NotificationPage alerts={alerts}/>;
 }
-
-const style = css`
-`;
 
 export default NotificationPageContainer;

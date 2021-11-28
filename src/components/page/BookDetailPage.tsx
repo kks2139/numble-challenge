@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {DescPanel, BookCard, Checkbox} from '../index';
+import {DescPanel, Checkbox} from '../index';
 import {BookData} from '../../utils/interfaces'; 
 import {FaStar, FaStarHalfAlt, FaHeart, FaShoppingCart, FaGift} from 'react-icons/fa';
 import {IoBookSharp} from 'react-icons/io5';
@@ -11,6 +11,7 @@ import {RiFilePaper2Line, RiAppleFill} from 'react-icons/ri';
 import {AiFillAndroid, AiFillWindows} from 'react-icons/ai';
 import {GrAppleAppStore} from 'react-icons/gr';
 import {GiHazardSign} from 'react-icons/gi';
+import {MessageInfo} from '../../utils/interfaces';
 
 type Div = React.MouseEvent<HTMLDivElement>;
 
@@ -20,9 +21,10 @@ interface Params {
 
 interface Props {
     toCart: (param: BookData)=> void
+    showMsg: (param: MessageInfo)=> void
 }
 
-function BookDetailPage({toCart}: Props) {
+function BookDetailPage({toCart, showMsg}: Props) {
     const navigate = useNavigate();
     const location = useLocation();
     const {book}: Params = location.state;
@@ -105,13 +107,24 @@ function BookDetailPage({toCart}: Props) {
     }
 
     const onClickReview = ()=>{
+        alert('dd');
         if(!isInputDone){
-            
+            showMsg({
+                msg: '별점을 먼저 남겨주세요.',
+                warn: true
+            });   
         }
     }
 
     const onClickToCart = ()=>{
         toCart(book);
+        showMsg({
+            msg: '카트에 담았습니다.',
+            link: '카트 보기',
+            linkCallback: ()=>{
+                navigate('/cart');
+            }
+        });  
     }
 
     const colorSelectedStars = ()=>{

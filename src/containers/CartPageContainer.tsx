@@ -17,11 +17,7 @@ function CartPageContainer() {
         dispatch(removeCheckedBook(book.id));
     }
 
-    return (
-        <div>
-            <CartPage bookList={cartList} checkedList={checkedList} onBookDelete={onBookDelete}/>
-        </div>
-    );
+    return <CartPage bookList={cartList} checkedList={checkedList} onBookDelete={onBookDelete}/>;
 }
 
 export default CartPageContainer;
