@@ -5,13 +5,13 @@
 #### 📌 배포 URL - [https://kks2139.github.io/deploy-numble-challenge/](https://kks2139.github.io/deploy-numble-challenge/)
 
 ```
-로그인 테스트 
-아이디 - numble1130 / 비밀번호 - 1111
+※ 로그인 테스트 ※ 
+ID - numble1130 / PW - 1111
 ```
 
 -----
 
-### * 기술 스택
+### ⚙ 기술 스택
 * React Hooks
 * Redux
 * Typescript
@@ -19,7 +19,7 @@
 * react-icons 
 
 
-### * 프로젝트 구성
+### 📋 프로젝트 구성
 ```
 📦src
  ┣ 📂components           --> 컴포넌트 파일 모음
