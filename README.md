@@ -4,6 +4,11 @@
     
 #### 📌 배포 URL - [https://kks2139.github.io/deploy-numble-challenge/](https://kks2139.github.io/deploy-numble-challenge/)
 
+```
+로그인 테스트 
+아이디 = numble1130 / 비밀번호 = 1111 입니다.
+```
+
 -----
 
 ### * 기술 스택
