@@ -33,7 +33,7 @@ ID - numble1130 / PW - 1111
  ┃ ┣ 📜BookCheckListContainer.tsx 
  ┃ ┣ 📜...
  ┃ ┣ 📜index.ts
- ┣ 📂redux-modules        --> 액션과 리듀서를 관심사에 따라 분리해놓은 모듈들의 모음
+ ┣ 📂redux-modules        --> 액션과 리듀서를 관심사에 따라 분리해놓은 리덕스모듈 모음
  ┃ ┣ 📜app.ts
  ┃ ┣ 📜...
  ┃ ┗ 📜index.ts
