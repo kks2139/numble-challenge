@@ -2,7 +2,7 @@
 
 #### 🔨리디북스의 실 페이지를 클론코딩 하는 프로젝트입니다.
     
-#### 📌배포 URL - <a href="https://kks2139.github.io/deploy-numble-challenge/" target="_blank">https://kks2139.github.io/deploy-numble-challenge/<a/>
+#### 📌배포 URL - <a href="https://kks2139.github.io/deploy-numble-challenge/" target="_blank">https://kks2139.github.io/deploy-numble-challenge/</a>
 
 -----
 
