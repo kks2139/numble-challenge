@@ -1,8 +1,8 @@
 # [넘블](https://www.numble.it/) 챌린지! - Front-End
 
-#### 🔨리디북스의 실 페이지를 클론코딩 하는 프로젝트입니다.
+#### 🔨 [리디북스](https://ridibooks.com/)의 실 페이지를 클론코딩 하는 프로젝트입니다.
     
-#### 📌배포 URL - <a href="https://kks2139.github.io/deploy-numble-challenge/" target="_blank">https://kks2139.github.io/deploy-numble-challenge/</a>
+#### 📌 배포 URL - [https://kks2139.github.io/deploy-numble-challenge/](https://kks2139.github.io/deploy-numble-challenge/)
 
 -----
 
