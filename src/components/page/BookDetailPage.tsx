@@ -115,7 +115,7 @@ function BookDetailPage({toCart, showMsg}: Props) {
             });   
         }
     }
-
+    
     const onClickToCart = ()=>{
         toCart(book);
         showMsg({
@@ -412,47 +412,47 @@ function BookDetailPage({toCart, showMsg}: Props) {
 const style = (isAuthor: boolean, starRate: number) => (css`
     display: flex;
     justify-content: center;
+    .img-modal {
+        z-index: 999;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        background-color: rgb(0,0,0,0.75);
+        .wrapper {
+            .close {
+                height: 40px;
+                display: flex;
+                justify-content: flex-end;
+                cursor: zoom-out;
+                &:hover {
+                    &::before {
+                        color: var(--gray_5);
+                    }    
+                }
+                &::before {
+                    content: '×';
+                    font-size: 27px;
+                    font-weight: bold;
+                    color: var(--gray_30);
+                }
+            }
+            img {
+                width: 60vh;
+                height: 87vh;
+                max-width: 900px;
+                min-width: 200px;
+                object-fit: cover;
+            }
+        }
+    }
     > .wrapper {
         width: 1016px;
         display: flex;
         padding: 0 20px 30px 45px;
-        .img-modal {
-            z-index: 999;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            background-color: rgb(0,0,0,0.75);
-            .wrapper {
-                .close {
-                    height: 40px;
-                    display: flex;
-                    justify-content: flex-end;
-                    cursor: zoom-out;
-                    &:hover {
-                        &::before {
-                            color: var(--gray_5);
-                        }    
-                    }
-                    &::before {
-                        content: '×';
-                        font-size: 27px;
-                        font-weight: bold;
-                        color: var(--gray_30);
-                    }
-                }
-                img {
-                    width: 60vh;
-                    height: 87vh;
-                    max-width: 900px;
-                    min-width: 200px;
-                    object-fit: cover;
-                }
-            }
-        }
         .book-box {
             padding-top: 40px;
             margin-right: 35px;
