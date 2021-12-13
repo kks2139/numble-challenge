@@ -3,6 +3,8 @@
 #### 🔨 [리디북스](https://ridibooks.com/)의 실 페이지를 클론코딩 하는 프로젝트입니다.
     
 #### 📌 배포 URL - [https://kks2139.github.io/deploy-numble-challenge/](https://kks2139.github.io/deploy-numble-challenge/)
+#### 📄 후기 글 - [https://kwangsunny.tistory.com/31](https://kwangsunny.tistory.com/31)
+
 
 ```
 ※ 로그인 테스트 ※ 
