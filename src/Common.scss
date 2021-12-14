@@ -178,6 +178,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+    outline: 0;
+    border: 0;
+}
+
 [class*='main-button-'] {
     border-radius: 4px;
     text-align: center;

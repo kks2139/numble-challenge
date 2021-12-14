@@ -10,56 +10,40 @@ interface StyleProps {
 
 interface Props {
     index: number
-    currentIndex: number
     imgUrl: string
-    isOdd?: boolean
-    circulate: boolean
+    currentIndex: number
     onClickImage: (param: string)=> void
 }
 
-function ImageItem({index, currentIndex, imgUrl, isOdd=false, circulate, onClickImage}: Props) {
+function ImageItem({index, imgUrl, currentIndex, onClickImage}: Props) {
     const imgRef = useRef<HTMLImageElement | null>(null);
-    const distance = Math.abs(index - currentIndex);
-    const isCenter = index === currentIndex;
-    const isSide = distance >= 1;
-    const isOutRange = distance >= 2;
-    const moveValue = isOdd ? -1 * (currentIndex * 100 - 50) : currentIndex * 100; 
+    const poistion = -1 * currentIndex * 100;
+    const selected = index-1 === currentIndex;
+    const vanish = Math.abs(index - 1 - currentIndex) > 1;
 
     const onClick = ()=>{
         onClickImage(imgUrl);
     }
 
     useEffect(()=>{
-        if(!circulate){
-            const value = isOdd ? `calc(${-1 * currentIndex}00% - 50%)` : `${-1 * currentIndex}00%`; 
-            imgRef.current!.style.transform = `translateX(${value})`;
-        }
+        imgRef.current!.style.transform = `translateX(${poistion}%)`;
     }, [currentIndex]);
 
     return (
-            <img css={style({isCenter, isSide, isOutRange})} src={imgUrl} onClick={onClick} ref={imgRef}></img>
+            <img css={style(selected, vanish)} src={imgUrl} onClick={onClick} ref={imgRef}></img>
     );
 }
 
-const style = ({isCenter, isSide, isOutRange}: StyleProps)=> (css`
+const style = (selected: boolean, vanish: boolean)=> (css`
     position: relative;
-    width: 100%;
-    height: 100%;
+    /* flex-grow: 1; */
+    width: 414px;
+    height: ${selected ? '286px' : '276px'};
+    opacity: ${vanish ? 0 : 1};
     padding: 0 5px;
-    opacity: 1;
     transition: .3s;
     border-radius: 10px;
-    ${isCenter ? `
-        & {
-            height: 286px;
-        }
-    ` : ''}
-    ${isSide ? `
-        opacity: .8;
-    ` : ''}
-    ${isOutRange ? `
-        opacity: 0;
-    ` : ''}
+    cursor: pointer;
 `);
 
 export default ImageItem;

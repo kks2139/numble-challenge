@@ -12,65 +12,32 @@ interface Props {
 function ImageSlider({eventList, onClickImage}: Props) {
     const divRef = useRef<HTMLDivElement | null>(null);
     const intervalId = useRef(0);
-    const [list, setList] = useState<Event[]>([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const center = Math.floor(eventList.length / 2);
-    const isOdd = eventList.length % 2 === 0;
-
-    const [circulate, setCirculate] = useState(false);
-
-    // center 정렬이라 가운데 아이템을 currentIndex = 0 이라고 잡음
-    // currentIndex 를 기준으로 + - 값을 가지고 translateX 값으로써 좌우 이동을 만듬
-    // currentIndex 가 기준이므로 index는 0 기준 좌우로 음수, 양수 값을 가지게 됨
+    const [currentIndex, setCurrentIndex] = useState(0); 
 
     const onClickSlide = (dir: string)=>{
         if(dir === 'left'){
-            if(center + currentIndex < 2){
-                circulateList(dir);
-                setCirculate(true);
-            }else{
-                setCurrentIndex(currentIndex - 1);
-                setCirculate(false);
-            }
+            setCurrentIndex(pre => pre - 1);
         }else{
-            if(center + currentIndex > eventList.length - 3){
-                circulateList(dir);
-                setCirculate(true);
-            }else{
-                setCurrentIndex(currentIndex + 1);
-                setCirculate(false);
-            }
+            setCurrentIndex(pre => pre + 1);
         }
     }
 
-    const circulateList = (dir: string)=>{
-        const newList = list.slice();
-        const moveNode = dir === 'left' ? newList.pop() : newList.shift();
-        if(moveNode){
-            if(dir=== 'left'){
-                newList.unshift(moveNode);
-            }else{
-                newList.push(moveNode);
-            }
-        }
-        setList(newList);
-    }
 
     useEffect(()=>{
-        setList(eventList);
+
     }, [eventList]);
     
     useEffect(()=>{
-        intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
-        return ()=> clearInterval(intervalId.current);
+        // intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
+        // return ()=> clearInterval(intervalId.current);
     });
 
     return (
         <div css={style} ref={divRef}>
             <div className='wrapper'>
-                {list.map((ev, i) => (
-                    <div key={i} className='box' data-move-box>
-                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={ev.thumbnail} isOdd={isOdd} circulate={circulate} onClickImage={onClickImage}/>
+                {eventList.map((ev, i) => (
+                    <div key={i} className='box'>
+                        <ImageItem index={i} imgUrl={ev.thumbnail} currentIndex={currentIndex} onClickImage={onClickImage}/>
                     </div>
                 ))}
             </div>
@@ -89,20 +56,14 @@ const style = css`
     position: relative;
     .wrapper {
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-wrap: nowrap;
-        width: 100%;
+        width: 1242px;
         height: 296px;
         overflow-x: hidden;
         .box {
             display: flex;
             align-items: center;
-            min-width: 414px;
-            height: 276px;
-            border-radius: 10px;
-            cursor: pointer;
-            @include nodrag;
         }
     }
     .buttons {
@@ -113,10 +74,6 @@ const style = css`
         svg {
             cursor: pointer;
         }
-    }
-
-    @keyframe slide {
-        
     }
 `;
 
