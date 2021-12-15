@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useMemo} from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {Event} from '../utils/interfaces';
@@ -10,35 +10,36 @@ interface Props {
 }
 
 function ImageSlider({eventList, onClickImage}: Props) {
-    const divRef = useRef<HTMLDivElement | null>(null);
+    // const imageList = useMemo(()=> eventList.concat(JSON.parse(JSON.stringify(eventList))), [eventList]);
+    const imageList = useMemo(()=> [eventList[eventList.length - 1]].concat(eventList), [eventList]);
     const intervalId = useRef(0);
-    const [currentIndex, setCurrentIndex] = useState(0); 
+    const [move, setMove] = useState(-1); 
 
     const onClickSlide = (dir: string)=>{
         if(dir === 'left'){
-            setCurrentIndex(pre => pre - 1);
+            setMove(pre => pre - 1);
         }else{
-            setCurrentIndex(pre => pre + 1);
+            setMove(pre => pre + 1);
         }
     }
 
-
-    useEffect(()=>{
-
-    }, [eventList]);
-    
     useEffect(()=>{
         // intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
         // return ()=> clearInterval(intervalId.current);
     });
 
     return (
-        <div css={style} ref={divRef}>
+        <div css={style}>
+            {move}
             <div className='wrapper'>
-                {eventList.map((ev, i) => (
-                    <div key={i} className='box'>
-                        <ImageItem index={i} imgUrl={ev.thumbnail} currentIndex={currentIndex} onClickImage={onClickImage}/>
-                    </div>
+                {imageList.map((ev, i) => (
+                    <ImageItem 
+                        key={i}
+                        imgUrl={ev.thumbnail} 
+                        index={i}
+                        move={move}
+                        itemLength={imageList.length}
+                        onClickImage={onClickImage}/>
                 ))}
             </div>
             <div className='buttons'>
@@ -55,16 +56,13 @@ const style = css`
     align-items: center;
     position: relative;
     .wrapper {
+        position: relative;
         display: flex;
         align-items: center;
         flex-wrap: nowrap;
         width: 1242px;
         height: 296px;
         overflow-x: hidden;
-        .box {
-            display: flex;
-            align-items: center;
-        }
     }
     .buttons {
         position: absolute;

@@ -9,41 +9,46 @@ interface StyleProps {
 }
 
 interface Props {
-    index: number
     imgUrl: string
-    currentIndex: number
+    index: number
+    move: number
+    itemLength: number
     onClickImage: (param: string)=> void
 }
 
-function ImageItem({index, imgUrl, currentIndex, onClickImage}: Props) {
-    const imgRef = useRef<HTMLImageElement | null>(null);
-    const poistion = -1 * currentIndex * 100;
-    const selected = index-1 === currentIndex;
-    const vanish = Math.abs(index - 1 - currentIndex) > 1;
+function ImageItem({imgUrl, index, move, itemLength, onClickImage}: Props) {
+    const divRef = useRef<HTMLImageElement | null>(null);
+    // const toEnd = Math.abs(move) === index ? 
+
+    const poistion = 414 * index + (move * 414);
+    const vanish = Math.abs(index - move) > 2;
 
     const onClick = ()=>{
         onClickImage(imgUrl);
     }
 
     useEffect(()=>{
-        imgRef.current!.style.transform = `translateX(${poistion}%)`;
-    }, [currentIndex]);
+        divRef.current!.style.transform = `translateX(${poistion}px)`;
+    }, [move]);
 
     return (
-            <img css={style(selected, vanish)} src={imgUrl} onClick={onClick} ref={imgRef}></img>
+        <div css={style(vanish)} ref={divRef}>
+            <img src={imgUrl} onClick={onClick}></img>
+        </div>
     );
 }
 
-const style = (selected: boolean, vanish: boolean)=> (css`
-    position: relative;
-    /* flex-grow: 1; */
-    width: 414px;
-    height: ${selected ? '286px' : '276px'};
-    opacity: ${vanish ? 0 : 1};
-    padding: 0 5px;
+const style = (vanish: boolean)=> (css`
+    position: absolute;
     transition: .3s;
-    border-radius: 10px;
-    cursor: pointer;
+    /* opacity: ${vanish ? 0 : 1}; */
+    img {
+        width: 414px;
+        height: 276px;
+        padding: 0 5px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
 `);
 
 export default ImageItem;
