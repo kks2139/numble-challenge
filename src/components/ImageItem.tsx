@@ -11,17 +11,14 @@ interface StyleProps {
 interface Props {
     imgUrl: string
     index: number
-    move: number
+    idxArr: number[]
     itemLength: number
     onClickImage: (param: string)=> void
 }
 
-function ImageItem({imgUrl, index, move, itemLength, onClickImage}: Props) {
+function ImageItem({imgUrl, index, idxArr, itemLength, onClickImage}: Props) {
     const divRef = useRef<HTMLImageElement | null>(null);
-    // const toEnd = Math.abs(move) === index ? 
-
-    const poistion = 414 * index + (move * 414);
-    const vanish = Math.abs(index - move) > 2;
+    const poistion = 414 * idxArr[index];
 
     const onClick = ()=>{
         onClickImage(imgUrl);
@@ -29,19 +26,18 @@ function ImageItem({imgUrl, index, move, itemLength, onClickImage}: Props) {
 
     useEffect(()=>{
         divRef.current!.style.transform = `translateX(${poistion}px)`;
-    }, [move]);
+    }, [idxArr]);
 
     return (
-        <div css={style(vanish)} ref={divRef}>
+        <div css={style()} ref={divRef}>
             <img src={imgUrl} onClick={onClick}></img>
         </div>
     );
 }
 
-const style = (vanish: boolean)=> (css`
+const style = ()=> (css`
     position: absolute;
     transition: .3s;
-    /* opacity: ${vanish ? 0 : 1}; */
     img {
         width: 414px;
         height: 276px;

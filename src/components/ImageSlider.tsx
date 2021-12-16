@@ -10,35 +10,34 @@ interface Props {
 }
 
 function ImageSlider({eventList, onClickImage}: Props) {
-    // const imageList = useMemo(()=> eventList.concat(JSON.parse(JSON.stringify(eventList))), [eventList]);
-    const imageList = useMemo(()=> [eventList[eventList.length - 1]].concat(eventList), [eventList]);
+    const imageList = useMemo(()=> eventList.concat(JSON.parse(JSON.stringify(eventList))), [eventList]);
     const intervalId = useRef(0);
-    const [move, setMove] = useState(-1); 
+    const [idxArr, setIdxArr] = useState<number[]>([]); 
 
     const onClickSlide = (dir: string)=>{
         if(dir === 'left'){
-            setMove(pre => pre - 1);
+            setIdxArr(arr => arr.slice(arr.length-1).concat(arr.slice(0, arr.length-1)));
         }else{
-            setMove(pre => pre + 1);
+            setIdxArr(arr => arr.slice(arr.length-2, arr.length-1).concat(arr.slice(1, arr.length-1)));
         }
     }
 
     useEffect(()=>{
         // intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
         // return ()=> clearInterval(intervalId.current);
-    });
+        setIdxArr(eventList.map((ev, i) => i));
+    }, [eventList]);
 
     return (
         <div css={style}>
-            {move}
             <div className='wrapper'>
-                {imageList.map((ev, i) => (
+                {eventList.map((ev, i) => (
                     <ImageItem 
                         key={i}
                         imgUrl={ev.thumbnail} 
                         index={i}
-                        move={move}
-                        itemLength={imageList.length}
+                        idxArr={idxArr}
+                        itemLength={eventList.length}
                         onClickImage={onClickImage}/>
                 ))}
             </div>
