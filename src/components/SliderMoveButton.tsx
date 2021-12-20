@@ -14,15 +14,16 @@ function SliderMoveButton({direction, type='', onMoveButtonClick}: Props) {
     }
 
     return (
-        <div css={style} className={`${type} ${direction} nodrag`} data-left onClick={onClick}>
+        <button css={style} className={`${type} ${direction} nodrag`} data-left onClick={onClick}>
             <div>{direction === 'left' ? '‹' : '›'}</div>
-        </div>
+        </button>
     );
 }
 
 const style = css`
-    text-align: center;
-    line-height: 31px;
+    display: flex;
+    justify-content: center;
+    line-height: 33px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -34,7 +35,7 @@ const style = css`
         opacity: 0.6;
     }
     div {
-        font-size: 26px;
+        font-size: 22px;
         color: var(--gray_40);
         transform: scale(1.2, 1.5);
         transition: .2s;

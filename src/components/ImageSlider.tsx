@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useMemo} from 'react';
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react';
 import {Event} from '../utils/interfaces';
@@ -10,68 +10,35 @@ interface Props {
 }
 
 function ImageSlider({eventList, onClickImage}: Props) {
-    const divRef = useRef<HTMLDivElement | null>(null);
+    const imageList = useMemo(()=> eventList.concat(JSON.parse(JSON.stringify(eventList))), [eventList]);
     const intervalId = useRef(0);
-    const [list, setList] = useState<Event[]>([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const center = Math.floor(eventList.length / 2);
-    const isOdd = eventList.length % 2 === 0;
-
-    const [circulate, setCirculate] = useState(false);
-
-    // center 정렬이라 가운데 아이템을 currentIndex = 0 이라고 잡음
-    // currentIndex 를 기준으로 + - 값을 가지고 translateX 값으로써 좌우 이동을 만듬
-    // currentIndex 가 기준이므로 index는 0 기준 좌우로 음수, 양수 값을 가지게 됨
+    const [idxArr, setIdxArr] = useState<number[]>([]); 
 
     const onClickSlide = (dir: string)=>{
         if(dir === 'left'){
-            if(center + currentIndex < 2){
-                circulateList(dir);
-                setCirculate(true);
-            }else{
-                setCurrentIndex(currentIndex - 1);
-                setCirculate(false);
-            }
+            setIdxArr(arr => arr.slice(arr.length-1).concat(arr.slice(0, arr.length-1)));
         }else{
-            if(center + currentIndex > eventList.length - 3){
-                circulateList(dir);
-                setCirculate(true);
-            }else{
-                setCurrentIndex(currentIndex + 1);
-                setCirculate(false);
-            }
+            setIdxArr(arr => arr.slice(arr.length-2, arr.length-1).concat(arr.slice(1, arr.length-1)));
         }
-    }
-
-    const circulateList = (dir: string)=>{
-        const newList = list.slice();
-        const moveNode = dir === 'left' ? newList.pop() : newList.shift();
-        if(moveNode){
-            if(dir=== 'left'){
-                newList.unshift(moveNode);
-            }else{
-                newList.push(moveNode);
-            }
-        }
-        setList(newList);
     }
 
     useEffect(()=>{
-        setList(eventList);
+        // intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
+        // return ()=> clearInterval(intervalId.current);
+        setIdxArr(eventList.map((ev, i) => i));
     }, [eventList]);
-    
-    useEffect(()=>{
-        intervalId.current = window.setInterval(()=> onClickSlide('right'), 10000);
-        return ()=> clearInterval(intervalId.current);
-    });
 
     return (
-        <div css={style} ref={divRef}>
+        <div css={style}>
             <div className='wrapper'>
-                {list.map((ev, i) => (
-                    <div key={i} className='box' data-move-box>
-                        <ImageItem index={-1 * (center - i)} currentIndex={currentIndex} imgUrl={ev.thumbnail} isOdd={isOdd} circulate={circulate} onClickImage={onClickImage}/>
-                    </div>
+                {eventList.map((ev, i) => (
+                    <ImageItem 
+                        key={i}
+                        imgUrl={ev.thumbnail} 
+                        index={i}
+                        idxArr={idxArr}
+                        itemLength={eventList.length}
+                        onClickImage={onClickImage}/>
                 ))}
             </div>
             <div className='buttons'>
@@ -88,22 +55,13 @@ const style = css`
     align-items: center;
     position: relative;
     .wrapper {
+        position: relative;
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-wrap: nowrap;
-        width: 100%;
+        width: 1242px;
         height: 296px;
         overflow-x: hidden;
-        .box {
-            display: flex;
-            align-items: center;
-            min-width: 414px;
-            height: 276px;
-            border-radius: 10px;
-            cursor: pointer;
-            @include nodrag;
-        }
     }
     .buttons {
         position: absolute;
@@ -113,10 +71,6 @@ const style = css`
         svg {
             cursor: pointer;
         }
-    }
-
-    @keyframe slide {
-        
     }
 `;
 
